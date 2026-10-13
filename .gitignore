@@ -1,0 +1,15 @@
+mosesdecoder/
+mgiza/
+multiblimp/
+dumped/
+data/
+logs/
+test-run/
+.venv/
+__pycache__/
+*.pt
+*.bin
+*.safetensors
+*.zip
+*.tok
+*.BACKUP

@@ -1,0 +1,13 @@
+{
+  "model": "baseline",
+  "description": "Baseline (continual pretraining, Spanish->Basque)",
+  "shots": 5,
+  "results": {
+    "bec": 0.337173579109063,
+    "bhtc": 0.10032362459546924,
+    "coref": 0.47700170357751276,
+    "qnli": 0.4327731092436975,
+    "vaxx": 0.261437908496732,
+    "wic": 0.49857142857142855
+  }
+}

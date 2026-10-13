@@ -1,0 +1,13 @@
+{
+  "model": "tokalign-untrained",
+  "description": "TokAlign-untrained (untrained TokAlign model)",
+  "shots": 5,
+  "results": {
+    "bec": 0.32565284178187404,
+    "bhtc": 0.14778856526429343,
+    "coref": 0.4991482112436116,
+    "qnli": 0.46218487394957986,
+    "vaxx": 0.10185185185185183,
+    "wic": 0.4928571428571429
+  }
+}

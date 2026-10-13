@@ -1,0 +1,72 @@
+{
+  "model": "tokalign-untrained",
+  "description": "TokAlign-untrained (untrained TokAlign model)",
+  "shots": 0,
+  "seeds": [
+    42,
+    123,
+    2024
+  ],
+  "results": {
+    "bec": {
+      "metric": "Micro F1 Score",
+      "per_seed_scores": {
+        "42": 0.38632872503840243,
+        "123": 0.38632872503840243,
+        "2024": 0.38632872503840243
+      },
+      "mean": 0.38632872503840243,
+      "std": 0.0
+    },
+    "bhtc": {
+      "metric": "Micro F1 Score",
+      "per_seed_scores": {
+        "42": 0.018878101402373247,
+        "123": 0.018878101402373247,
+        "2024": 0.018878101402373247
+      },
+      "mean": 0.018878101402373247,
+      "std": 0.0
+    },
+    "coref": {
+      "metric": "Accuracy Score",
+      "per_seed_scores": {
+        "42": 0.49744463373083475,
+        "123": 0.49744463373083475,
+        "2024": 0.49744463373083475
+      },
+      "mean": 0.49744463373083475,
+      "std": 0.0
+    },
+    "qnli": {
+      "metric": "Accuracy Score",
+      "per_seed_scores": {
+        "42": 0.5,
+        "123": 0.5,
+        "2024": 0.5
+      },
+      "mean": 0.5,
+      "std": 0.0
+    },
+    "vaxx": {
+      "metric": "Vaxx F1 Score",
+      "per_seed_scores": {
+        "42": 0.1686746987951807,
+        "123": 0.1686746987951807,
+        "2024": 0.1686746987951807
+      },
+      "mean": 0.1686746987951807,
+      "std": 0.0
+    },
+    "wic": {
+      "metric": "Accuracy Score",
+      "per_seed_scores": {
+        "42": 0.5,
+        "123": 0.5,
+        "2024": 0.5
+      },
+      "mean": 0.5,
+      "std": 0.0
+    }
+  }
+}

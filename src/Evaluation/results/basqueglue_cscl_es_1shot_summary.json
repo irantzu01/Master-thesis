@@ -1,0 +1,13 @@
+{
+  "model": "cscl_es",
+  "description": "CSCL-es (Spanish-base CSCL pipeline)",
+  "shots": 1,
+  "results": {
+    "bec": 0.3317972350230415,
+    "bhtc": 0.10302049622437973,
+    "coref": 0.5059625212947189,
+    "qnli": 0.5084033613445378,
+    "vaxx": 0.27217318200924756,
+    "wic": 0.49642857142857144
+  }
+}

@@ -1,0 +1,352 @@
+{"id": 0, "gold": 0, "prediction": 0, "correct": true, "scores": [-5886.94384765625, -5888.314453125, -5887.6171875, -5887.13525390625], "num_candidates": 4}
+{"id": 1, "gold": 3, "prediction": 1, "correct": false, "scores": [-5822.00830078125, -5820.6494140625, -5823.14111328125, -5821.89990234375], "num_candidates": 4}
+{"id": 2, "gold": 1, "prediction": 0, "correct": false, "scores": [-5672.4150390625, -5673.85791015625, -5674.9794921875, -5674.2109375], "num_candidates": 4}
+{"id": 3, "gold": 2, "prediction": 0, "correct": false, "scores": [-5672.4150390625, -5673.85791015625, -5674.9794921875, -5674.2109375], "num_candidates": 4}
+{"id": 4, "gold": 1, "prediction": 3, "correct": false, "scores": [-5628.1025390625, -5629.03173828125, -5630.81884765625, -5627.41455078125], "num_candidates": 4}
+{"id": 5, "gold": 2, "prediction": 0, "correct": false, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125, -5762.12255859375], "num_candidates": 4}
+{"id": 6, "gold": 0, "prediction": 0, "correct": true, "scores": [-5667.32421875, -5668.875, -5671.052734375, -5669.16796875], "num_candidates": 4}
+{"id": 7, "gold": 0, "prediction": 3, "correct": false, "scores": [-5951.75244140625, -5952.11376953125, -5953.72314453125, -5951.6767578125], "num_candidates": 4}
+{"id": 8, "gold": 2, "prediction": 3, "correct": false, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375, -5432.46435546875], "num_candidates": 4}
+{"id": 9, "gold": 3, "prediction": 0, "correct": false, "scores": [-5482.103515625, -5483.9931640625, -5484.50048828125, -5482.251953125], "num_candidates": 4}
+{"id": 10, "gold": 0, "prediction": 3, "correct": false, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375, -5432.46435546875], "num_candidates": 4}
+{"id": 11, "gold": 1, "prediction": 0, "correct": false, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 12, "gold": 2, "prediction": 1, "correct": false, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625, -5645.009765625], "num_candidates": 4}
+{"id": 13, "gold": 3, "prediction": 0, "correct": false, "scores": [-5666.32080078125, -5667.1630859375, -5667.3369140625, -5667.77587890625], "num_candidates": 4}
+{"id": 14, "gold": 2, "prediction": 0, "correct": false, "scores": [-5886.94384765625, -5888.314453125, -5887.6171875, -5887.13525390625], "num_candidates": 4}
+{"id": 15, "gold": 2, "prediction": 0, "correct": false, "scores": [-5241.6044921875, -5242.85107421875, -5245.078125, -5243.43603515625], "num_candidates": 4}
+{"id": 16, "gold": 0, "prediction": 0, "correct": true, "scores": [-5827.39599609375, -5828.76611328125, -5829.42529296875, -5828.3876953125], "num_candidates": 4}
+{"id": 17, "gold": 1, "prediction": 0, "correct": false, "scores": [-5666.32080078125, -5667.1630859375, -5667.3369140625, -5667.77587890625], "num_candidates": 4}
+{"id": 18, "gold": 0, "prediction": 0, "correct": true, "scores": [-5886.94384765625, -5888.314453125, -5887.6171875, -5887.13525390625], "num_candidates": 4}
+{"id": 19, "gold": 3, "prediction": 1, "correct": false, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625, -5645.009765625], "num_candidates": 4}
+{"id": 20, "gold": 2, "prediction": 0, "correct": false, "scores": [-5482.103515625, -5483.9931640625, -5484.50048828125, -5482.251953125], "num_candidates": 4}
+{"id": 21, "gold": 1, "prediction": 0, "correct": false, "scores": [-5241.6044921875, -5242.85107421875, -5245.078125, -5243.43603515625], "num_candidates": 4}
+{"id": 22, "gold": 1, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 23, "gold": 0, "prediction": 1, "correct": false, "scores": [-5782.71240234375, -5782.62353515625, -5784.400390625, -5782.92919921875], "num_candidates": 4}
+{"id": 24, "gold": 3, "prediction": 1, "correct": false, "scores": [-5862.49658203125, -5862.4912109375, -5864.7734375, -5863.63623046875], "num_candidates": 4}
+{"id": 25, "gold": 0, "prediction": 3, "correct": false, "scores": [-5706.43408203125, -5708.13916015625, -5709.20849609375, -5705.9453125], "num_candidates": 4}
+{"id": 26, "gold": 0, "prediction": 0, "correct": true, "scores": [-5310.2060546875, -5311.1103515625, -5312.04736328125, -5310.90380859375], "num_candidates": 4}
+{"id": 27, "gold": 3, "prediction": 0, "correct": false, "scores": [-5548.46875, -5549.5849609375, -5550.02685546875, -5548.9794921875], "num_candidates": 4}
+{"id": 28, "gold": 3, "prediction": 0, "correct": false, "scores": [-5842.18603515625, -5843.3427734375, -5843.666015625, -5842.3427734375], "num_candidates": 4}
+{"id": 29, "gold": 1, "prediction": 1, "correct": true, "scores": [-5060.9091796875, -5060.244140625, -5061.7587890625, -5060.3291015625], "num_candidates": 4}
+{"id": 30, "gold": 3, "prediction": 0, "correct": false, "scores": [-6039.52490234375, -6041.72900390625, -6043.0625, -6041.087890625], "num_candidates": 4}
+{"id": 31, "gold": 3, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 32, "gold": 0, "prediction": 3, "correct": false, "scores": [-5706.43408203125, -5708.13916015625, -5709.20849609375, -5705.9453125], "num_candidates": 4}
+{"id": 33, "gold": 0, "prediction": 3, "correct": false, "scores": [-5706.43408203125, -5708.13916015625, -5709.20849609375, -5705.9453125], "num_candidates": 4}
+{"id": 34, "gold": 0, "prediction": 3, "correct": false, "scores": [-5951.75244140625, -5952.11376953125, -5953.72314453125, -5951.6767578125], "num_candidates": 4}
+{"id": 35, "gold": 1, "prediction": 0, "correct": false, "scores": [-5944.7197265625, -5947.5283203125, -5947.32763671875, -5945.75634765625], "num_candidates": 4}
+{"id": 36, "gold": 3, "prediction": 0, "correct": false, "scores": [-5252.6025390625, -5255.9111328125, -5255.59130859375, -5254.20361328125], "num_candidates": 4}
+{"id": 37, "gold": 3, "prediction": 0, "correct": false, "scores": [-5672.4150390625, -5673.85791015625, -5674.9794921875, -5674.2109375], "num_candidates": 4}
+{"id": 38, "gold": 3, "prediction": 0, "correct": false, "scores": [-6117.66015625, -6118.24365234375, -6119.056640625, -6118.09033203125], "num_candidates": 4}
+{"id": 39, "gold": 0, "prediction": 3, "correct": false, "scores": [-5951.75244140625, -5952.11376953125, -5953.72314453125, -5951.6767578125], "num_candidates": 4}
+{"id": 40, "gold": 1, "prediction": 0, "correct": false, "scores": [-5241.6044921875, -5242.85107421875, -5245.078125, -5243.43603515625], "num_candidates": 4}
+{"id": 41, "gold": 0, "prediction": 0, "correct": true, "scores": [-5395.27197265625, -5396.51025390625, -5397.52783203125, -5395.5380859375], "num_candidates": 4}
+{"id": 42, "gold": 1, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 43, "gold": 0, "prediction": 0, "correct": true, "scores": [-6039.52490234375, -6041.72900390625, -6043.0625, -6041.087890625], "num_candidates": 4}
+{"id": 44, "gold": 2, "prediction": 3, "correct": false, "scores": [-5611.63525390625, -5611.1357421875, -5613.1767578125, -5610.92431640625], "num_candidates": 4}
+{"id": 45, "gold": 1, "prediction": 0, "correct": false, "scores": [-5827.39599609375, -5828.76611328125, -5829.42529296875, -5828.3876953125], "num_candidates": 4}
+{"id": 46, "gold": 1, "prediction": 0, "correct": false, "scores": [-5827.39599609375, -5828.76611328125, -5829.42529296875, -5828.3876953125], "num_candidates": 4}
+{"id": 47, "gold": 0, "prediction": 1, "correct": false, "scores": [-5636.6962890625, -5636.5537109375, -5638.90625, -5637.28857421875], "num_candidates": 4}
+{"id": 48, "gold": 1, "prediction": 1, "correct": true, "scores": [-5862.49658203125, -5862.4912109375, -5864.7734375, -5863.63623046875], "num_candidates": 4}
+{"id": 49, "gold": 3, "prediction": 0, "correct": false, "scores": [-5672.4150390625, -5673.85791015625, -5674.9794921875, -5674.2109375], "num_candidates": 4}
+{"id": 50, "gold": 0, "prediction": 0, "correct": true, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125], "num_candidates": 3}
+{"id": 51, "gold": 0, "prediction": 0, "correct": true, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625], "num_candidates": 3}
+{"id": 52, "gold": 1, "prediction": 0, "correct": false, "scores": [-6039.52490234375, -6041.72900390625, -6043.0625], "num_candidates": 3}
+{"id": 53, "gold": 2, "prediction": 0, "correct": false, "scores": [-5842.18603515625, -5843.3427734375, -5843.666015625], "num_candidates": 3}
+{"id": 54, "gold": 1, "prediction": 0, "correct": false, "scores": [-6072.0205078125, -6072.92138671875, -6074.16650390625], "num_candidates": 3}
+{"id": 55, "gold": 2, "prediction": 0, "correct": false, "scores": [-5651.7197265625, -5651.9111328125, -5653.03173828125, -5651.7529296875], "num_candidates": 4}
+{"id": 56, "gold": 1, "prediction": 0, "correct": false, "scores": [-5667.32421875, -5668.875, -5671.052734375, -5669.16796875], "num_candidates": 4}
+{"id": 57, "gold": 1, "prediction": 1, "correct": true, "scores": [-5636.6962890625, -5636.5537109375, -5638.90625, -5637.28857421875], "num_candidates": 4}
+{"id": 58, "gold": 0, "prediction": 3, "correct": false, "scores": [-5951.75244140625, -5952.11376953125, -5953.72314453125, -5951.6767578125], "num_candidates": 4}
+{"id": 59, "gold": 0, "prediction": 0, "correct": true, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 60, "gold": 3, "prediction": 3, "correct": true, "scores": [-5407.427734375, -5409.03515625, -5410.68115234375, -5407.185546875], "num_candidates": 4}
+{"id": 61, "gold": 1, "prediction": 1, "correct": true, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625, -5645.009765625], "num_candidates": 4}
+{"id": 62, "gold": 1, "prediction": 1, "correct": true, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625, -5645.009765625], "num_candidates": 4}
+{"id": 63, "gold": 3, "prediction": 0, "correct": false, "scores": [-5842.18603515625, -5843.3427734375, -5843.666015625, -5842.3427734375], "num_candidates": 4}
+{"id": 64, "gold": 0, "prediction": 3, "correct": false, "scores": [-5492.7392578125, -5492.61767578125, -5494.37353515625, -5491.18994140625], "num_candidates": 4}
+{"id": 65, "gold": 2, "prediction": 0, "correct": false, "scores": [-5666.32080078125, -5667.1630859375, -5667.3369140625, -5667.77587890625], "num_candidates": 4}
+{"id": 66, "gold": 1, "prediction": 1, "correct": true, "scores": [-5862.49658203125, -5862.4912109375, -5864.7734375, -5863.63623046875], "num_candidates": 4}
+{"id": 67, "gold": 3, "prediction": 0, "correct": false, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125, -5762.12255859375], "num_candidates": 4}
+{"id": 68, "gold": 3, "prediction": 0, "correct": false, "scores": [-5819.044921875, -5820.86865234375, -5820.62060546875, -5820.1904296875], "num_candidates": 4}
+{"id": 69, "gold": 2, "prediction": 0, "correct": false, "scores": [-5666.32080078125, -5667.1630859375, -5667.3369140625, -5667.77587890625], "num_candidates": 4}
+{"id": 70, "gold": 2, "prediction": 3, "correct": false, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625, -5587.18212890625], "num_candidates": 4}
+{"id": 71, "gold": 2, "prediction": 0, "correct": false, "scores": [-5667.32421875, -5668.875, -5671.052734375, -5669.16796875], "num_candidates": 4}
+{"id": 72, "gold": 3, "prediction": 0, "correct": false, "scores": [-5827.39599609375, -5828.76611328125, -5829.42529296875, -5828.3876953125], "num_candidates": 4}
+{"id": 73, "gold": 0, "prediction": 0, "correct": true, "scores": [-6117.66015625, -6118.24365234375, -6119.056640625, -6118.09033203125], "num_candidates": 4}
+{"id": 74, "gold": 1, "prediction": 0, "correct": false, "scores": [-6072.0205078125, -6072.92138671875, -6074.16650390625, -6072.28515625], "num_candidates": 4}
+{"id": 75, "gold": 1, "prediction": 0, "correct": false, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 76, "gold": 2, "prediction": 0, "correct": false, "scores": [-5651.7197265625, -5651.9111328125, -5653.03173828125, -5651.7529296875], "num_candidates": 4}
+{"id": 77, "gold": 0, "prediction": 0, "correct": true, "scores": [-5482.103515625, -5483.9931640625, -5484.50048828125, -5482.251953125], "num_candidates": 4}
+{"id": 78, "gold": 3, "prediction": 0, "correct": false, "scores": [-6072.0205078125, -6072.92138671875, -6074.16650390625, -6072.28515625], "num_candidates": 4}
+{"id": 79, "gold": 2, "prediction": 0, "correct": false, "scores": [-5241.6044921875, -5242.85107421875, -5245.078125, -5243.43603515625], "num_candidates": 4}
+{"id": 80, "gold": 3, "prediction": 0, "correct": false, "scores": [-5666.32080078125, -5667.1630859375, -5667.3369140625, -5667.77587890625], "num_candidates": 4}
+{"id": 81, "gold": 2, "prediction": 0, "correct": false, "scores": [-6072.0205078125, -6072.92138671875, -6074.16650390625, -6072.28515625], "num_candidates": 4}
+{"id": 82, "gold": 2, "prediction": 0, "correct": false, "scores": [-5886.94384765625, -5888.314453125, -5887.6171875, -5887.13525390625], "num_candidates": 4}
+{"id": 83, "gold": 2, "prediction": 0, "correct": false, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125, -5762.12255859375], "num_candidates": 4}
+{"id": 84, "gold": 2, "prediction": 0, "correct": false, "scores": [-5310.2060546875, -5311.1103515625, -5312.04736328125, -5310.90380859375], "num_candidates": 4}
+{"id": 85, "gold": 2, "prediction": 0, "correct": false, "scores": [-5651.7197265625, -5651.9111328125, -5653.03173828125, -5651.7529296875], "num_candidates": 4}
+{"id": 86, "gold": 2, "prediction": 0, "correct": false, "scores": [-5252.6025390625, -5255.9111328125, -5255.59130859375, -5254.20361328125], "num_candidates": 4}
+{"id": 87, "gold": 2, "prediction": 0, "correct": false, "scores": [-5353.3828125, -5353.83056640625, -5354.24462890625, -5353.6552734375], "num_candidates": 4}
+{"id": 88, "gold": 2, "prediction": 1, "correct": false, "scores": [-5782.71240234375, -5782.62353515625, -5784.400390625, -5782.92919921875], "num_candidates": 4}
+{"id": 89, "gold": 3, "prediction": 3, "correct": true, "scores": [-5951.75244140625, -5952.11376953125, -5953.72314453125, -5951.6767578125], "num_candidates": 4}
+{"id": 90, "gold": 3, "prediction": 0, "correct": false, "scores": [-6039.52490234375, -6041.72900390625, -6043.0625, -6041.087890625], "num_candidates": 4}
+{"id": 91, "gold": 1, "prediction": 3, "correct": false, "scores": [-5951.75244140625, -5952.11376953125, -5953.72314453125, -5951.6767578125], "num_candidates": 4}
+{"id": 92, "gold": 0, "prediction": 1, "correct": false, "scores": [-5822.00830078125, -5820.6494140625, -5823.14111328125, -5821.89990234375], "num_candidates": 4}
+{"id": 93, "gold": 3, "prediction": 1, "correct": false, "scores": [-5822.00830078125, -5820.6494140625, -5823.14111328125, -5821.89990234375], "num_candidates": 4}
+{"id": 94, "gold": 0, "prediction": 3, "correct": false, "scores": [-5748.2939453125, -5748.0244140625, -5748.72802734375, -5747.71728515625], "num_candidates": 4}
+{"id": 95, "gold": 0, "prediction": 0, "correct": true, "scores": [-5886.94384765625, -5888.314453125, -5887.6171875, -5887.13525390625], "num_candidates": 4}
+{"id": 96, "gold": 3, "prediction": 0, "correct": false, "scores": [-6039.52490234375, -6041.72900390625, -6043.0625, -6041.087890625], "num_candidates": 4}
+{"id": 97, "gold": 2, "prediction": 1, "correct": false, "scores": [-5862.49658203125, -5862.4912109375, -5864.7734375, -5863.63623046875], "num_candidates": 4}
+{"id": 98, "gold": 2, "prediction": 1, "correct": false, "scores": [-5536.2451171875, -5536.2265625, -5538.22607421875, -5536.39453125], "num_candidates": 4}
+{"id": 99, "gold": 1, "prediction": 3, "correct": false, "scores": [-5706.43408203125, -5708.13916015625, -5709.20849609375, -5705.9453125], "num_candidates": 4}
+{"id": 100, "gold": 1, "prediction": 0, "correct": false, "scores": [-5482.103515625, -5483.9931640625, -5484.50048828125, -5482.251953125], "num_candidates": 4}
+{"id": 101, "gold": 2, "prediction": 0, "correct": false, "scores": [-5842.18603515625, -5843.3427734375, -5843.666015625, -5842.3427734375], "num_candidates": 4}
+{"id": 102, "gold": 1, "prediction": 0, "correct": false, "scores": [-5827.39599609375, -5828.76611328125, -5829.42529296875, -5828.3876953125], "num_candidates": 4}
+{"id": 103, "gold": 1, "prediction": 3, "correct": false, "scores": [-5813.97998046875, -5814.24072265625, -5815.6220703125, -5813.77783203125], "num_candidates": 4}
+{"id": 104, "gold": 1, "prediction": 0, "correct": false, "scores": [-5495.3349609375, -5496.537109375, -5497.96826171875, -5497.17724609375], "num_candidates": 4}
+{"id": 105, "gold": 0, "prediction": 0, "correct": true, "scores": [-5651.7197265625, -5651.9111328125, -5653.03173828125, -5651.7529296875], "num_candidates": 4}
+{"id": 106, "gold": 0, "prediction": 3, "correct": false, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375, -5432.46435546875], "num_candidates": 4}
+{"id": 107, "gold": 0, "prediction": 0, "correct": true, "scores": [-5252.6025390625, -5255.9111328125, -5255.59130859375, -5254.20361328125], "num_candidates": 4}
+{"id": 108, "gold": 0, "prediction": 0, "correct": true, "scores": [-6072.0205078125, -6072.92138671875, -6074.16650390625, -6072.28515625], "num_candidates": 4}
+{"id": 109, "gold": 3, "prediction": 3, "correct": true, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625, -5587.18212890625], "num_candidates": 4}
+{"id": 110, "gold": 1, "prediction": 0, "correct": false, "scores": [-5241.6044921875, -5242.85107421875, -5245.078125, -5243.43603515625], "num_candidates": 4}
+{"id": 111, "gold": 0, "prediction": 0, "correct": true, "scores": [-5672.4150390625, -5673.85791015625, -5674.9794921875, -5674.2109375], "num_candidates": 4}
+{"id": 112, "gold": 3, "prediction": 0, "correct": false, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 113, "gold": 3, "prediction": 0, "correct": false, "scores": [-5252.6025390625, -5255.9111328125, -5255.59130859375, -5254.20361328125], "num_candidates": 4}
+{"id": 114, "gold": 3, "prediction": 1, "correct": false, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625, -5645.009765625], "num_candidates": 4}
+{"id": 115, "gold": 2, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 116, "gold": 0, "prediction": 3, "correct": false, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375, -5432.46435546875], "num_candidates": 4}
+{"id": 117, "gold": 3, "prediction": 3, "correct": true, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625, -5587.18212890625], "num_candidates": 4}
+{"id": 118, "gold": 0, "prediction": 3, "correct": false, "scores": [-5492.7392578125, -5492.61767578125, -5494.37353515625, -5491.18994140625], "num_candidates": 4}
+{"id": 119, "gold": 1, "prediction": 0, "correct": false, "scores": [-5666.32080078125, -5667.1630859375, -5667.3369140625, -5667.77587890625], "num_candidates": 4}
+{"id": 120, "gold": 3, "prediction": 0, "correct": false, "scores": [-5507.05712890625, -5509.013671875, -5509.8359375, -5508.22216796875], "num_candidates": 4}
+{"id": 121, "gold": 3, "prediction": 1, "correct": false, "scores": [-5782.71240234375, -5782.62353515625, -5784.400390625, -5782.92919921875], "num_candidates": 4}
+{"id": 122, "gold": 3, "prediction": 1, "correct": false, "scores": [-5782.71240234375, -5782.62353515625, -5784.400390625, -5782.92919921875], "num_candidates": 4}
+{"id": 123, "gold": 1, "prediction": 0, "correct": false, "scores": [-5666.32080078125, -5667.1630859375, -5667.3369140625, -5667.77587890625], "num_candidates": 4}
+{"id": 124, "gold": 0, "prediction": 3, "correct": false, "scores": [-5756.42529296875, -5757.2607421875, -5757.3056640625, -5756.40283203125], "num_candidates": 4}
+{"id": 125, "gold": 3, "prediction": 0, "correct": false, "scores": [-6072.0205078125, -6072.92138671875, -6074.16650390625, -6072.28515625], "num_candidates": 4}
+{"id": 126, "gold": 0, "prediction": 0, "correct": true, "scores": [-5842.18603515625, -5843.3427734375, -5843.666015625, -5842.3427734375], "num_candidates": 4}
+{"id": 127, "gold": 2, "prediction": 3, "correct": false, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375, -5432.46435546875], "num_candidates": 4}
+{"id": 128, "gold": 2, "prediction": 3, "correct": false, "scores": [-5748.2939453125, -5748.0244140625, -5748.72802734375, -5747.71728515625], "num_candidates": 4}
+{"id": 129, "gold": 0, "prediction": 0, "correct": true, "scores": [-5827.39599609375, -5828.76611328125, -5829.42529296875, -5828.3876953125], "num_candidates": 4}
+{"id": 130, "gold": 3, "prediction": 3, "correct": true, "scores": [-5628.1025390625, -5629.03173828125, -5630.81884765625, -5627.41455078125], "num_candidates": 4}
+{"id": 131, "gold": 3, "prediction": 0, "correct": false, "scores": [-5630.0234375, -5632.076171875, -5633.0009765625, -5631.330078125], "num_candidates": 4}
+{"id": 132, "gold": 2, "prediction": 0, "correct": false, "scores": [-5615.6044921875, -5615.912109375, -5617.8720703125, -5616.14501953125], "num_candidates": 4}
+{"id": 133, "gold": 1, "prediction": 1, "correct": true, "scores": [-5498.76513671875, -5498.12060546875, -5499.82763671875, -5498.56103515625], "num_candidates": 4}
+{"id": 134, "gold": 3, "prediction": 0, "correct": false, "scores": [-5581.2861328125, -5581.9990234375, -5583.55322265625, -5581.390625], "num_candidates": 4}
+{"id": 135, "gold": 3, "prediction": 0, "correct": false, "scores": [-6117.66015625, -6118.24365234375, -6119.056640625, -6118.09033203125], "num_candidates": 4}
+{"id": 136, "gold": 1, "prediction": 3, "correct": false, "scores": [-5611.63525390625, -5611.1357421875, -5613.1767578125, -5610.92431640625], "num_candidates": 4}
+{"id": 137, "gold": 1, "prediction": 3, "correct": false, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625, -5587.18212890625], "num_candidates": 4}
+{"id": 138, "gold": 0, "prediction": 1, "correct": false, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625, -5645.009765625], "num_candidates": 4}
+{"id": 139, "gold": 1, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 140, "gold": 1, "prediction": 0, "correct": false, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125, -5762.12255859375], "num_candidates": 4}
+{"id": 141, "gold": 0, "prediction": 0, "correct": true, "scores": [-5842.18603515625, -5843.3427734375, -5843.666015625, -5842.3427734375], "num_candidates": 4}
+{"id": 142, "gold": 1, "prediction": 0, "correct": false, "scores": [-5827.39599609375, -5828.76611328125, -5829.42529296875, -5828.3876953125], "num_candidates": 4}
+{"id": 143, "gold": 0, "prediction": 0, "correct": true, "scores": [-5241.6044921875, -5242.85107421875, -5245.078125, -5243.43603515625], "num_candidates": 4}
+{"id": 144, "gold": 0, "prediction": 0, "correct": true, "scores": [-6117.66015625, -6118.24365234375, -6119.056640625, -6118.09033203125], "num_candidates": 4}
+{"id": 145, "gold": 0, "prediction": 1, "correct": false, "scores": [-5822.00830078125, -5820.6494140625, -5823.14111328125, -5821.89990234375], "num_candidates": 4}
+{"id": 146, "gold": 0, "prediction": 0, "correct": true, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 147, "gold": 3, "prediction": 1, "correct": false, "scores": [-5862.49658203125, -5862.4912109375, -5864.7734375, -5863.63623046875], "num_candidates": 4}
+{"id": 148, "gold": 1, "prediction": 3, "correct": false, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375, -5432.46435546875], "num_candidates": 4}
+{"id": 149, "gold": 2, "prediction": 1, "correct": false, "scores": [-5638.32470703125, -5636.90771484375, -5639.66357421875, -5637.9677734375], "num_candidates": 4}
+{"id": 150, "gold": 0, "prediction": 0, "correct": true, "scores": [-5548.46875, -5549.5849609375, -5550.02685546875, -5548.9794921875], "num_candidates": 4}
+{"id": 151, "gold": 1, "prediction": 0, "correct": false, "scores": [-5842.18603515625, -5843.3427734375, -5843.666015625, -5842.3427734375], "num_candidates": 4}
+{"id": 152, "gold": 3, "prediction": 3, "correct": true, "scores": [-5706.43408203125, -5708.13916015625, -5709.20849609375, -5705.9453125], "num_candidates": 4}
+{"id": 153, "gold": 0, "prediction": 3, "correct": false, "scores": [-5407.427734375, -5409.03515625, -5410.68115234375, -5407.185546875], "num_candidates": 4}
+{"id": 154, "gold": 2, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 155, "gold": 1, "prediction": 3, "correct": false, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625, -5587.18212890625], "num_candidates": 4}
+{"id": 156, "gold": 1, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 157, "gold": 1, "prediction": 0, "correct": false, "scores": [-5666.32080078125, -5667.1630859375, -5667.3369140625, -5667.77587890625], "num_candidates": 4}
+{"id": 158, "gold": 3, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 159, "gold": 2, "prediction": 0, "correct": false, "scores": [-6039.52490234375, -6041.72900390625, -6043.0625, -6041.087890625], "num_candidates": 4}
+{"id": 160, "gold": 1, "prediction": 0, "correct": false, "scores": [-5407.427734375, -5409.03515625, -5410.68115234375], "num_candidates": 3}
+{"id": 161, "gold": 1, "prediction": 0, "correct": false, "scores": [-6072.0205078125, -6072.92138671875, -6074.16650390625], "num_candidates": 3}
+{"id": 162, "gold": 0, "prediction": 0, "correct": true, "scores": [-5706.43408203125, -5708.13916015625, -5709.20849609375], "num_candidates": 3}
+{"id": 163, "gold": 0, "prediction": 0, "correct": true, "scores": [-5407.427734375, -5409.03515625, -5410.68115234375], "num_candidates": 3}
+{"id": 164, "gold": 1, "prediction": 0, "correct": false, "scores": [-5407.427734375, -5409.03515625, -5410.68115234375], "num_candidates": 3}
+{"id": 165, "gold": 0, "prediction": 1, "correct": false, "scores": [-5822.00830078125, -5820.6494140625, -5823.14111328125, -5821.89990234375], "num_candidates": 4}
+{"id": 166, "gold": 1, "prediction": 1, "correct": true, "scores": [-5862.49658203125, -5862.4912109375, -5864.7734375, -5863.63623046875], "num_candidates": 4}
+{"id": 167, "gold": 0, "prediction": 0, "correct": true, "scores": [-6039.52490234375, -6041.72900390625, -6043.0625, -6041.087890625], "num_candidates": 4}
+{"id": 168, "gold": 3, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 169, "gold": 2, "prediction": 0, "correct": false, "scores": [-6117.66015625, -6118.24365234375, -6119.056640625, -6118.09033203125], "num_candidates": 4}
+{"id": 170, "gold": 2, "prediction": 3, "correct": false, "scores": [-5492.7392578125, -5492.61767578125, -5494.37353515625, -5491.18994140625], "num_candidates": 4}
+{"id": 171, "gold": 2, "prediction": 3, "correct": false, "scores": [-5706.43408203125, -5708.13916015625, -5709.20849609375, -5705.9453125], "num_candidates": 4}
+{"id": 172, "gold": 1, "prediction": 0, "correct": false, "scores": [-5252.6025390625, -5255.9111328125, -5255.59130859375, -5254.20361328125], "num_candidates": 4}
+{"id": 173, "gold": 2, "prediction": 0, "correct": false, "scores": [-5667.32421875, -5668.875, -5671.052734375, -5669.16796875], "num_candidates": 4}
+{"id": 174, "gold": 1, "prediction": 1, "correct": true, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625, -5645.009765625], "num_candidates": 4}
+{"id": 175, "gold": 2, "prediction": 3, "correct": false, "scores": [-5407.427734375, -5409.03515625, -5410.68115234375, -5407.185546875], "num_candidates": 4}
+{"id": 176, "gold": 0, "prediction": 0, "correct": true, "scores": [-5884.166015625, -5886.13818359375, -5886.89208984375, -5886.13232421875], "num_candidates": 4}
+{"id": 177, "gold": 1, "prediction": 1, "correct": true, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625, -5645.009765625], "num_candidates": 4}
+{"id": 178, "gold": 0, "prediction": 3, "correct": false, "scores": [-5748.2939453125, -5748.0244140625, -5748.72802734375, -5747.71728515625], "num_candidates": 4}
+{"id": 179, "gold": 0, "prediction": 1, "correct": false, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625, -5645.009765625], "num_candidates": 4}
+{"id": 180, "gold": 1, "prediction": 0, "correct": false, "scores": [-5672.4150390625, -5673.85791015625, -5674.9794921875, -5674.2109375], "num_candidates": 4}
+{"id": 181, "gold": 1, "prediction": 0, "correct": false, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 182, "gold": 3, "prediction": 3, "correct": true, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375, -5432.46435546875], "num_candidates": 4}
+{"id": 183, "gold": 1, "prediction": 0, "correct": false, "scores": [-5689.11669921875, -5691.65625, -5692.48681640625, -5691.447265625], "num_candidates": 4}
+{"id": 184, "gold": 2, "prediction": 0, "correct": false, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 185, "gold": 2, "prediction": 0, "correct": false, "scores": [-5482.103515625, -5483.9931640625, -5484.50048828125, -5482.251953125], "num_candidates": 4}
+{"id": 186, "gold": 2, "prediction": 3, "correct": false, "scores": [-5951.75244140625, -5952.11376953125, -5953.72314453125, -5951.6767578125], "num_candidates": 4}
+{"id": 187, "gold": 3, "prediction": 0, "correct": false, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125, -5762.12255859375], "num_candidates": 4}
+{"id": 188, "gold": 0, "prediction": 3, "correct": false, "scores": [-5628.1025390625, -5629.03173828125, -5630.81884765625, -5627.41455078125], "num_candidates": 4}
+{"id": 189, "gold": 1, "prediction": 0, "correct": false, "scores": [-5827.39599609375, -5828.76611328125, -5829.42529296875, -5828.3876953125], "num_candidates": 4}
+{"id": 190, "gold": 3, "prediction": 3, "correct": true, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625, -5587.18212890625], "num_candidates": 4}
+{"id": 191, "gold": 1, "prediction": 1, "correct": true, "scores": [-5822.00830078125, -5820.6494140625, -5823.14111328125, -5821.89990234375], "num_candidates": 4}
+{"id": 192, "gold": 3, "prediction": 0, "correct": false, "scores": [-5827.39599609375, -5828.76611328125, -5829.42529296875, -5828.3876953125], "num_candidates": 4}
+{"id": 193, "gold": 0, "prediction": 1, "correct": false, "scores": [-5862.49658203125, -5862.4912109375, -5864.7734375, -5863.63623046875], "num_candidates": 4}
+{"id": 194, "gold": 3, "prediction": 0, "correct": false, "scores": [-5252.6025390625, -5255.9111328125, -5255.59130859375, -5254.20361328125], "num_candidates": 4}
+{"id": 195, "gold": 1, "prediction": 3, "correct": false, "scores": [-5407.427734375, -5409.03515625, -5410.68115234375, -5407.185546875], "num_candidates": 4}
+{"id": 196, "gold": 1, "prediction": 0, "correct": false, "scores": [-5544.60498046875, -5545.07568359375, -5545.81396484375, -5544.84130859375], "num_candidates": 4}
+{"id": 197, "gold": 3, "prediction": 0, "correct": false, "scores": [-5672.4150390625, -5673.85791015625, -5674.9794921875, -5674.2109375], "num_candidates": 4}
+{"id": 198, "gold": 1, "prediction": 3, "correct": false, "scores": [-5628.1025390625, -5629.03173828125, -5630.81884765625, -5627.41455078125], "num_candidates": 4}
+{"id": 199, "gold": 2, "prediction": 3, "correct": false, "scores": [-5951.75244140625, -5952.11376953125, -5953.72314453125, -5951.6767578125], "num_candidates": 4}
+{"id": 200, "gold": 2, "prediction": 0, "correct": false, "scores": [-6072.0205078125, -6072.92138671875, -6074.16650390625, -6072.28515625], "num_candidates": 4}
+{"id": 201, "gold": 3, "prediction": 3, "correct": true, "scores": [-5407.427734375, -5409.03515625, -5410.68115234375, -5407.185546875], "num_candidates": 4}
+{"id": 202, "gold": 2, "prediction": 0, "correct": false, "scores": [-6039.52490234375, -6041.72900390625, -6043.0625, -6041.087890625], "num_candidates": 4}
+{"id": 203, "gold": 0, "prediction": 0, "correct": true, "scores": [-5944.7197265625, -5947.5283203125, -5947.32763671875, -5945.75634765625], "num_candidates": 4}
+{"id": 204, "gold": 2, "prediction": 3, "correct": false, "scores": [-5748.2939453125, -5748.0244140625, -5748.72802734375, -5747.71728515625], "num_candidates": 4}
+{"id": 205, "gold": 1, "prediction": 3, "correct": false, "scores": [-5723.21044921875, -5723.94677734375, -5724.70556640625, -5723.16650390625], "num_candidates": 4}
+{"id": 206, "gold": 2, "prediction": 3, "correct": false, "scores": [-5706.43408203125, -5708.13916015625, -5709.20849609375, -5705.9453125], "num_candidates": 4}
+{"id": 207, "gold": 0, "prediction": 0, "correct": true, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125, -5762.12255859375], "num_candidates": 4}
+{"id": 208, "gold": 2, "prediction": 0, "correct": false, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 209, "gold": 3, "prediction": 0, "correct": false, "scores": [-5241.6044921875, -5242.85107421875, -5245.078125, -5243.43603515625], "num_candidates": 4}
+{"id": 210, "gold": 3, "prediction": 1, "correct": false, "scores": [-5782.71240234375, -5782.62353515625, -5784.400390625, -5782.92919921875], "num_candidates": 4}
+{"id": 211, "gold": 1, "prediction": 0, "correct": false, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 212, "gold": 2, "prediction": 0, "correct": false, "scores": [-5667.32421875, -5668.875, -5671.052734375, -5669.16796875], "num_candidates": 4}
+{"id": 213, "gold": 1, "prediction": 1, "correct": true, "scores": [-5060.9091796875, -5060.244140625, -5061.7587890625, -5060.3291015625], "num_candidates": 4}
+{"id": 214, "gold": 2, "prediction": 3, "correct": false, "scores": [-5407.427734375, -5409.03515625, -5410.68115234375, -5407.185546875], "num_candidates": 4}
+{"id": 215, "gold": 2, "prediction": 1, "correct": false, "scores": [-5636.6962890625, -5636.5537109375, -5638.90625, -5637.28857421875], "num_candidates": 4}
+{"id": 216, "gold": 2, "prediction": 0, "correct": false, "scores": [-5310.2060546875, -5311.1103515625, -5312.04736328125, -5310.90380859375], "num_candidates": 4}
+{"id": 217, "gold": 2, "prediction": 0, "correct": false, "scores": [-6117.66015625, -6118.24365234375, -6119.056640625, -6118.09033203125], "num_candidates": 4}
+{"id": 218, "gold": 2, "prediction": 3, "correct": false, "scores": [-5706.43408203125, -5708.13916015625, -5709.20849609375, -5705.9453125], "num_candidates": 4}
+{"id": 219, "gold": 0, "prediction": 3, "correct": false, "scores": [-5685.330078125, -5685.74365234375, -5686.31103515625, -5685.2646484375], "num_candidates": 4}
+{"id": 220, "gold": 1, "prediction": 1, "correct": true, "scores": [-5782.71240234375, -5782.62353515625, -5784.400390625], "num_candidates": 3}
+{"id": 221, "gold": 1, "prediction": 0, "correct": false, "scores": [-5651.7197265625, -5651.9111328125, -5653.03173828125], "num_candidates": 3}
+{"id": 222, "gold": 1, "prediction": 1, "correct": true, "scores": [-5492.7392578125, -5492.61767578125, -5494.37353515625], "num_candidates": 3}
+{"id": 223, "gold": 0, "prediction": 0, "correct": true, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125], "num_candidates": 3}
+{"id": 224, "gold": 1, "prediction": 0, "correct": false, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375], "num_candidates": 3}
+{"id": 225, "gold": 0, "prediction": 3, "correct": false, "scores": [-5628.1025390625, -5629.03173828125, -5630.81884765625, -5627.41455078125], "num_candidates": 4}
+{"id": 226, "gold": 1, "prediction": 0, "correct": false, "scores": [-5492.60498046875, -5494.12158203125, -5494.642578125, -5493.07421875], "num_candidates": 4}
+{"id": 227, "gold": 2, "prediction": 0, "correct": false, "scores": [-5310.2060546875, -5311.1103515625, -5312.04736328125, -5310.90380859375], "num_candidates": 4}
+{"id": 228, "gold": 0, "prediction": 3, "correct": false, "scores": [-5932.1484375, -5933.01416015625, -5932.693359375, -5931.51904296875], "num_candidates": 4}
+{"id": 229, "gold": 3, "prediction": 3, "correct": true, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625, -5587.18212890625], "num_candidates": 4}
+{"id": 230, "gold": 1, "prediction": 3, "correct": false, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375, -5432.46435546875], "num_candidates": 4}
+{"id": 231, "gold": 0, "prediction": 3, "correct": false, "scores": [-5628.1025390625, -5629.03173828125, -5630.81884765625, -5627.41455078125], "num_candidates": 4}
+{"id": 232, "gold": 3, "prediction": 0, "correct": false, "scores": [-5602.59912109375, -5604.23681640625, -5603.236328125, -5603.111328125], "num_candidates": 4}
+{"id": 233, "gold": 0, "prediction": 0, "correct": true, "scores": [-5507.17138671875, -5509.99072265625, -5510.91064453125, -5509.61669921875], "num_candidates": 4}
+{"id": 234, "gold": 3, "prediction": 0, "correct": false, "scores": [-5252.6025390625, -5255.9111328125, -5255.59130859375, -5254.20361328125], "num_candidates": 4}
+{"id": 235, "gold": 1, "prediction": 0, "correct": false, "scores": [-5252.6025390625, -5255.9111328125, -5255.59130859375, -5254.20361328125], "num_candidates": 4}
+{"id": 236, "gold": 0, "prediction": 0, "correct": true, "scores": [-5666.32080078125, -5667.1630859375, -5667.3369140625, -5667.77587890625], "num_candidates": 4}
+{"id": 237, "gold": 1, "prediction": 3, "correct": false, "scores": [-5492.7392578125, -5492.61767578125, -5494.37353515625, -5491.18994140625], "num_candidates": 4}
+{"id": 238, "gold": 3, "prediction": 3, "correct": true, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375, -5432.46435546875], "num_candidates": 4}
+{"id": 239, "gold": 3, "prediction": 1, "correct": false, "scores": [-5862.49658203125, -5862.4912109375, -5864.7734375, -5863.63623046875], "num_candidates": 4}
+{"id": 240, "gold": 1, "prediction": 0, "correct": false, "scores": [-5482.103515625, -5483.9931640625, -5484.50048828125], "num_candidates": 3}
+{"id": 241, "gold": 2, "prediction": 0, "correct": false, "scores": [-6072.0205078125, -6072.92138671875, -6074.16650390625], "num_candidates": 3}
+{"id": 242, "gold": 1, "prediction": 1, "correct": true, "scores": [-5782.71240234375, -5782.62353515625, -5784.400390625], "num_candidates": 3}
+{"id": 243, "gold": 0, "prediction": 0, "correct": true, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125], "num_candidates": 3}
+{"id": 244, "gold": 2, "prediction": 0, "correct": false, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375], "num_candidates": 3}
+{"id": 245, "gold": 0, "prediction": 1, "correct": false, "scores": [-5862.49658203125, -5862.4912109375, -5864.7734375, -5863.63623046875], "num_candidates": 4}
+{"id": 246, "gold": 3, "prediction": 3, "correct": true, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625, -5587.18212890625], "num_candidates": 4}
+{"id": 247, "gold": 3, "prediction": 1, "correct": false, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625, -5645.009765625], "num_candidates": 4}
+{"id": 248, "gold": 0, "prediction": 0, "correct": true, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 249, "gold": 1, "prediction": 0, "correct": false, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 250, "gold": 2, "prediction": 0, "correct": false, "scores": [-5310.2060546875, -5311.1103515625, -5312.04736328125, -5310.90380859375], "num_candidates": 4}
+{"id": 251, "gold": 2, "prediction": 0, "correct": false, "scores": [-5252.6025390625, -5255.9111328125, -5255.59130859375, -5254.20361328125], "num_candidates": 4}
+{"id": 252, "gold": 1, "prediction": 0, "correct": false, "scores": [-6117.66015625, -6118.24365234375, -6119.056640625, -6118.09033203125], "num_candidates": 4}
+{"id": 253, "gold": 1, "prediction": 3, "correct": false, "scores": [-5951.75244140625, -5952.11376953125, -5953.72314453125, -5951.6767578125], "num_candidates": 4}
+{"id": 254, "gold": 1, "prediction": 0, "correct": false, "scores": [-5842.18603515625, -5843.3427734375, -5843.666015625, -5842.3427734375], "num_candidates": 4}
+{"id": 255, "gold": 3, "prediction": 1, "correct": false, "scores": [-5636.6962890625, -5636.5537109375, -5638.90625, -5637.28857421875], "num_candidates": 4}
+{"id": 256, "gold": 2, "prediction": 0, "correct": false, "scores": [-5827.39599609375, -5828.76611328125, -5829.42529296875, -5828.3876953125], "num_candidates": 4}
+{"id": 257, "gold": 1, "prediction": 3, "correct": false, "scores": [-5748.2939453125, -5748.0244140625, -5748.72802734375, -5747.71728515625], "num_candidates": 4}
+{"id": 258, "gold": 0, "prediction": 0, "correct": true, "scores": [-5667.32421875, -5668.875, -5671.052734375, -5669.16796875], "num_candidates": 4}
+{"id": 259, "gold": 3, "prediction": 0, "correct": false, "scores": [-5630.0234375, -5632.076171875, -5633.0009765625, -5631.330078125], "num_candidates": 4}
+{"id": 260, "gold": 3, "prediction": 0, "correct": false, "scores": [-5886.94384765625, -5888.314453125, -5887.6171875, -5887.13525390625], "num_candidates": 4}
+{"id": 261, "gold": 1, "prediction": 3, "correct": false, "scores": [-5837.248046875, -5838.0283203125, -5838.52001953125, -5837.04541015625], "num_candidates": 4}
+{"id": 262, "gold": 1, "prediction": 0, "correct": false, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 263, "gold": 1, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 264, "gold": 0, "prediction": 0, "correct": true, "scores": [-5310.2060546875, -5311.1103515625, -5312.04736328125, -5310.90380859375], "num_candidates": 4}
+{"id": 265, "gold": 2, "prediction": 1, "correct": false, "scores": [-5060.9091796875, -5060.244140625, -5061.7587890625, -5060.3291015625], "num_candidates": 4}
+{"id": 266, "gold": 0, "prediction": 3, "correct": false, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375, -5432.46435546875], "num_candidates": 4}
+{"id": 267, "gold": 2, "prediction": 0, "correct": false, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125, -5762.12255859375], "num_candidates": 4}
+{"id": 268, "gold": 3, "prediction": 0, "correct": false, "scores": [-5568.74169921875, -5570.32373046875, -5571.66455078125, -5569.01953125], "num_candidates": 4}
+{"id": 269, "gold": 3, "prediction": 3, "correct": true, "scores": [-5628.1025390625, -5629.03173828125, -5630.81884765625, -5627.41455078125], "num_candidates": 4}
+{"id": 270, "gold": 0, "prediction": 0, "correct": true, "scores": [-5630.0234375, -5632.076171875, -5633.0009765625, -5631.330078125], "num_candidates": 4}
+{"id": 271, "gold": 1, "prediction": 0, "correct": false, "scores": [-5630.0234375, -5632.076171875, -5633.0009765625, -5631.330078125], "num_candidates": 4}
+{"id": 272, "gold": 2, "prediction": 0, "correct": false, "scores": [-6117.66015625, -6118.24365234375, -6119.056640625, -6118.09033203125], "num_candidates": 4}
+{"id": 273, "gold": 3, "prediction": 0, "correct": false, "scores": [-5886.94384765625, -5888.314453125, -5887.6171875, -5887.13525390625], "num_candidates": 4}
+{"id": 274, "gold": 3, "prediction": 0, "correct": false, "scores": [-6039.52490234375, -6041.72900390625, -6043.0625, -6041.087890625], "num_candidates": 4}
+{"id": 275, "gold": 3, "prediction": 0, "correct": false, "scores": [-5827.39599609375, -5828.76611328125, -5829.42529296875, -5828.3876953125], "num_candidates": 4}
+{"id": 276, "gold": 1, "prediction": 1, "correct": true, "scores": [-5822.00830078125, -5820.6494140625, -5823.14111328125, -5821.89990234375], "num_candidates": 4}
+{"id": 277, "gold": 0, "prediction": 0, "correct": true, "scores": [-6072.0205078125, -6072.92138671875, -6074.16650390625, -6072.28515625], "num_candidates": 4}
+{"id": 278, "gold": 0, "prediction": 3, "correct": false, "scores": [-5951.75244140625, -5952.11376953125, -5953.72314453125, -5951.6767578125], "num_candidates": 4}
+{"id": 279, "gold": 3, "prediction": 0, "correct": false, "scores": [-5667.32421875, -5668.875, -5671.052734375, -5669.16796875], "num_candidates": 4}
+{"id": 280, "gold": 1, "prediction": 0, "correct": false, "scores": [-5667.32421875, -5668.875, -5671.052734375], "num_candidates": 3}
+{"id": 281, "gold": 2, "prediction": 0, "correct": false, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125], "num_candidates": 3}
+{"id": 282, "gold": 2, "prediction": 1, "correct": false, "scores": [-5782.71240234375, -5782.62353515625, -5784.400390625], "num_candidates": 3}
+{"id": 283, "gold": 2, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875], "num_candidates": 3}
+{"id": 284, "gold": 1, "prediction": 0, "correct": false, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625], "num_candidates": 3}
+{"id": 285, "gold": 0, "prediction": 3, "correct": false, "scores": [-5628.1025390625, -5629.03173828125, -5630.81884765625, -5627.41455078125], "num_candidates": 4}
+{"id": 286, "gold": 2, "prediction": 1, "correct": false, "scores": [-5060.9091796875, -5060.244140625, -5061.7587890625, -5060.3291015625], "num_candidates": 4}
+{"id": 287, "gold": 1, "prediction": 3, "correct": false, "scores": [-5946.36962890625, -5947.1181640625, -5948.33642578125, -5946.18701171875], "num_candidates": 4}
+{"id": 288, "gold": 1, "prediction": 0, "correct": false, "scores": [-6072.0205078125, -6072.92138671875, -6074.16650390625, -6072.28515625], "num_candidates": 4}
+{"id": 289, "gold": 2, "prediction": 0, "correct": false, "scores": [-5944.7197265625, -5947.5283203125, -5947.32763671875, -5945.75634765625], "num_candidates": 4}
+{"id": 290, "gold": 1, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 291, "gold": 1, "prediction": 1, "correct": true, "scores": [-5060.9091796875, -5060.244140625, -5061.7587890625, -5060.3291015625], "num_candidates": 4}
+{"id": 292, "gold": 3, "prediction": 0, "correct": false, "scores": [-5883.98095703125, -5886.3095703125, -5886.373046875, -5886.06005859375], "num_candidates": 4}
+{"id": 293, "gold": 0, "prediction": 0, "correct": true, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 294, "gold": 0, "prediction": 0, "correct": true, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125, -5762.12255859375], "num_candidates": 4}
+{"id": 295, "gold": 2, "prediction": 0, "correct": false, "scores": [-5310.2060546875, -5311.1103515625, -5312.04736328125, -5310.90380859375], "num_candidates": 4}
+{"id": 296, "gold": 1, "prediction": 0, "correct": false, "scores": [-5672.4150390625, -5673.85791015625, -5674.9794921875, -5674.2109375], "num_candidates": 4}
+{"id": 297, "gold": 0, "prediction": 0, "correct": true, "scores": [-5651.7197265625, -5651.9111328125, -5653.03173828125, -5651.7529296875], "num_candidates": 4}
+{"id": 298, "gold": 0, "prediction": 0, "correct": true, "scores": [-5693.49267578125, -5694.28076171875, -5694.58984375, -5694.5185546875], "num_candidates": 4}
+{"id": 299, "gold": 2, "prediction": 0, "correct": false, "scores": [-5761.720703125, -5763.279296875, -5763.8486328125, -5762.12255859375], "num_candidates": 4}
+{"id": 300, "gold": 2, "prediction": 0, "correct": false, "scores": [-5630.0234375, -5632.076171875, -5633.0009765625], "num_candidates": 3}
+{"id": 301, "gold": 2, "prediction": 0, "correct": false, "scores": [-5310.2060546875, -5311.1103515625, -5312.04736328125], "num_candidates": 3}
+{"id": 302, "gold": 2, "prediction": 0, "correct": false, "scores": [-6039.52490234375, -6041.72900390625, -6043.0625], "num_candidates": 3}
+{"id": 303, "gold": 1, "prediction": 1, "correct": true, "scores": [-5862.49658203125, -5862.4912109375, -5864.7734375], "num_candidates": 3}
+{"id": 304, "gold": 2, "prediction": 0, "correct": false, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875], "num_candidates": 3}
+{"id": 305, "gold": 0, "prediction": 0, "correct": true, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 306, "gold": 1, "prediction": 0, "correct": false, "scores": [-5482.103515625, -5483.9931640625, -5484.50048828125, -5482.251953125], "num_candidates": 4}
+{"id": 307, "gold": 0, "prediction": 3, "correct": false, "scores": [-5492.7392578125, -5492.61767578125, -5494.37353515625, -5491.18994140625], "num_candidates": 4}
+{"id": 308, "gold": 1, "prediction": 0, "correct": false, "scores": [-5827.39599609375, -5828.76611328125, -5829.42529296875, -5828.3876953125], "num_candidates": 4}
+{"id": 309, "gold": 2, "prediction": 0, "correct": false, "scores": [-5842.18603515625, -5843.3427734375, -5843.666015625, -5842.3427734375], "num_candidates": 4}
+{"id": 310, "gold": 1, "prediction": 0, "correct": false, "scores": [-6039.52490234375, -6041.72900390625, -6043.0625, -6041.087890625], "num_candidates": 4}
+{"id": 311, "gold": 3, "prediction": 1, "correct": false, "scores": [-5862.49658203125, -5862.4912109375, -5864.7734375, -5863.63623046875], "num_candidates": 4}
+{"id": 312, "gold": 2, "prediction": 3, "correct": false, "scores": [-5951.75244140625, -5952.11376953125, -5953.72314453125, -5951.6767578125], "num_candidates": 4}
+{"id": 313, "gold": 2, "prediction": 0, "correct": false, "scores": [-5482.103515625, -5483.9931640625, -5484.50048828125, -5482.251953125], "num_candidates": 4}
+{"id": 314, "gold": 1, "prediction": 0, "correct": false, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 315, "gold": 1, "prediction": 3, "correct": false, "scores": [-5706.43408203125, -5708.13916015625, -5709.20849609375, -5705.9453125], "num_candidates": 4}
+{"id": 316, "gold": 0, "prediction": 0, "correct": true, "scores": [-6072.0205078125, -6072.92138671875, -6074.16650390625, -6072.28515625], "num_candidates": 4}
+{"id": 317, "gold": 2, "prediction": 0, "correct": false, "scores": [-5475.994140625, -5478.3701171875, -5478.79150390625, -5476.658203125], "num_candidates": 4}
+{"id": 318, "gold": 1, "prediction": 0, "correct": false, "scores": [-5548.46875, -5549.5849609375, -5550.02685546875, -5548.9794921875], "num_candidates": 4}
+{"id": 319, "gold": 1, "prediction": 0, "correct": false, "scores": [-5241.6044921875, -5242.85107421875, -5245.078125, -5243.43603515625], "num_candidates": 4}
+{"id": 320, "gold": 2, "prediction": 0, "correct": false, "scores": [-6117.66015625, -6118.24365234375, -6119.056640625], "num_candidates": 3}
+{"id": 321, "gold": 1, "prediction": 0, "correct": false, "scores": [-6117.66015625, -6118.24365234375, -6119.056640625], "num_candidates": 3}
+{"id": 322, "gold": 0, "prediction": 1, "correct": false, "scores": [-5782.71240234375, -5782.62353515625, -5784.400390625], "num_candidates": 3}
+{"id": 323, "gold": 1, "prediction": 1, "correct": true, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625], "num_candidates": 3}
+{"id": 324, "gold": 2, "prediction": 0, "correct": false, "scores": [-5653.2646484375, -5655.056640625, -5655.33349609375], "num_candidates": 3}
+{"id": 325, "gold": 3, "prediction": 0, "correct": false, "scores": [-5886.94384765625, -5888.314453125, -5887.6171875, -5887.13525390625], "num_candidates": 4}
+{"id": 326, "gold": 2, "prediction": 3, "correct": false, "scores": [-5628.1025390625, -5629.03173828125, -5630.81884765625, -5627.41455078125], "num_candidates": 4}
+{"id": 327, "gold": 1, "prediction": 0, "correct": false, "scores": [-5630.0234375, -5632.076171875, -5633.0009765625, -5631.330078125], "num_candidates": 4}
+{"id": 328, "gold": 2, "prediction": 1, "correct": false, "scores": [-5536.2451171875, -5536.2265625, -5538.22607421875, -5536.39453125], "num_candidates": 4}
+{"id": 329, "gold": 3, "prediction": 3, "correct": true, "scores": [-5748.2939453125, -5748.0244140625, -5748.72802734375, -5747.71728515625], "num_candidates": 4}
+{"id": 330, "gold": 3, "prediction": 3, "correct": true, "scores": [-5951.75244140625, -5952.11376953125, -5953.72314453125, -5951.6767578125], "num_candidates": 4}
+{"id": 331, "gold": 2, "prediction": 0, "correct": false, "scores": [-5842.18603515625, -5843.3427734375, -5843.666015625, -5842.3427734375], "num_candidates": 4}
+{"id": 332, "gold": 1, "prediction": 3, "correct": false, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625, -5587.18212890625], "num_candidates": 4}
+{"id": 333, "gold": 3, "prediction": 0, "correct": false, "scores": [-5482.103515625, -5483.9931640625, -5484.50048828125, -5482.251953125], "num_candidates": 4}
+{"id": 334, "gold": 3, "prediction": 3, "correct": true, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625, -5587.18212890625], "num_candidates": 4}
+{"id": 335, "gold": 1, "prediction": 0, "correct": false, "scores": [-5820.3251953125, -5821.1357421875, -5821.435546875, -5820.880859375], "num_candidates": 4}
+{"id": 336, "gold": 2, "prediction": 1, "correct": false, "scores": [-5782.71240234375, -5782.62353515625, -5784.400390625, -5782.92919921875], "num_candidates": 4}
+{"id": 337, "gold": 2, "prediction": 3, "correct": false, "scores": [-5788.4072265625, -5789.2734375, -5789.1064453125, -5787.4755859375], "num_candidates": 4}
+{"id": 338, "gold": 1, "prediction": 0, "correct": false, "scores": [-6100.50830078125, -6102.04638671875, -6102.69384765625, -6100.8994140625], "num_candidates": 4}
+{"id": 339, "gold": 1, "prediction": 3, "correct": false, "scores": [-5611.63525390625, -5611.1357421875, -5613.1767578125, -5610.92431640625], "num_candidates": 4}
+{"id": 340, "gold": 1, "prediction": 0, "correct": false, "scores": [-5252.6025390625, -5255.9111328125, -5255.59130859375, -5254.20361328125], "num_candidates": 4}
+{"id": 341, "gold": 3, "prediction": 0, "correct": false, "scores": [-5630.0234375, -5632.076171875, -5633.0009765625, -5631.330078125], "num_candidates": 4}
+{"id": 342, "gold": 0, "prediction": 0, "correct": true, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 343, "gold": 3, "prediction": 1, "correct": false, "scores": [-5862.49658203125, -5862.4912109375, -5864.7734375, -5863.63623046875], "num_candidates": 4}
+{"id": 344, "gold": 2, "prediction": 3, "correct": false, "scores": [-5587.80029296875, -5588.32421875, -5588.3994140625, -5587.18212890625], "num_candidates": 4}
+{"id": 345, "gold": 1, "prediction": 3, "correct": false, "scores": [-5407.427734375, -5409.03515625, -5410.68115234375, -5407.185546875], "num_candidates": 4}
+{"id": 346, "gold": 3, "prediction": 0, "correct": false, "scores": [-6039.52490234375, -6041.72900390625, -6043.0625, -6041.087890625], "num_candidates": 4}
+{"id": 347, "gold": 1, "prediction": 1, "correct": true, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625, -5645.009765625], "num_candidates": 4}
+{"id": 348, "gold": 1, "prediction": 0, "correct": false, "scores": [-5294.541015625, -5295.91796875, -5296.32373046875, -5295.07958984375], "num_candidates": 4}
+{"id": 349, "gold": 0, "prediction": 3, "correct": false, "scores": [-5432.55712890625, -5432.78564453125, -5433.73974609375, -5432.46435546875], "num_candidates": 4}
+{"id": 350, "gold": 0, "prediction": 1, "correct": false, "scores": [-5644.8671875, -5641.25048828125, -5646.92041015625, -5645.009765625], "num_candidates": 4}
+{"id": 351, "gold": 1, "prediction": 0, "correct": false, "scores": [-5944.7197265625, -5947.5283203125, -5947.32763671875, -5945.75634765625], "num_candidates": 4}

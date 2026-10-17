@@ -42,7 +42,7 @@ echo "[INFO] Resuming Baseline Monolingual Training from Step 280,000..."
 # Absolute path targeting the full state folder (Weights + Optimizer States + Trainer States)
 # CHECKPOINT_PATH="$OUTPUT_DIR/checkpoint-280000"
 
-python "$BASE_DIR/code/continual_training_es.py" \
+python "$BASE_DIR/src/Training/continual_training_es.py" \
     --output_dir "$OUTPUT_DIR" \
 
 echo "[INFO] Baseline complete. 400,000 total steps accounted for. Results saved in $OUTPUT_DIR"

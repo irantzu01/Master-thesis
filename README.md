@@ -1,7 +1,9 @@
-# Adapting GPT-2-scale models to Basque: code-switching curriculum learning and vocabulary adaptation
+# Bridging the Representation Gap: Combining Vocabulary Adaptation and Code-Switching for Low Resource Languages
 
-Code for the MSc thesis of **Irantzu Elcoro Alberdi** (MSc Applied Data Science, University of Göttingen).
-First examiner: Prof. Lisa Beinborn · Supervisor: Zhuojing Huang · Second examiner: Prof. Caroline Sporleder.
+Code for the MSc thesis of **Irantzu Elcoro Alberdi** (MSc Applied Data Science, Georg-August-Universität Göttingen, Human-Centered Data Science, September 2026).
+First examiner and supervisor: Prof. Lisa Beinborn · Second examiner: Prof. Caroline Sporleder · Co-supervisor: Zhuojing Huang.
+
+The thesis adapts GPT-2-scale models to Basque. This repository contains the code for data construction, training and evaluation; model checkpoints are attached to a release (see below).
 
 > Lines marked **TODO** still need to be checked or filled in before submission. Delete them once done.
 
@@ -25,7 +27,7 @@ The thesis adapts two small GPT-2 models to Basque and compares:
 
 The unadapted GPT-2 Spanish and GPT-2 English are evaluated as references.
 
-**Curriculum.** Phases 1a/1b/1c use synthetic code-switched text (POS-guided lemma substitution with Apertium: modifiers, verbs, nouns), phase 2 alternates sentences (OpenSubtitles; BasqueParl/EuskañolDS for Spanish), and phase 3 is monolingual Basque. Steps per phase: 44,444 / 44,444 / 44,445 / 133,333 / 133,334 (400k in total). Weights are carried over between phases; the optimizer and learning-rate schedule restart in each phase with 5% warmup.
+**Curriculum.** Phases 1a/1b/1c use synthetic code-switched text (POS-guided lemma substitution with Apertium: adjectives and adverbs, verbs, nouns), phase 2 alternates sentences (OpenSubtitles; plus BasqueParl and EuskañolDS for Spanish), and phase 3 is monolingual Basque (Latxa). Every configuration sees the same data budget of 4,123,000 lines (1,374,333 per phase; phase 1 is three subphases of 458,111 lines). Steps per phase: 44,444 / 44,444 / 44,445 / 133,333 / 133,334 (400k in total). Weights are carried over between phases; the optimizer and learning-rate schedule restart in each phase with 5% warmup.
 
 **Shared hyperparameters.** Learning rate 5e-5, cosine schedule, weight decay 0.01, AdamW (eps 1e-4), gradient clipping 0.3, bf16, batch 8 × 4 accumulation steps = 32, maximum length 512. The Baseline uses a single schedule with 1% warmup.
 
@@ -90,11 +92,15 @@ The corpora are not redistributed. Download them from the sources below. `src/da
 
 | Data                              | Source                                                                  | Used for                          |
 |-----------------------------------|-------------------------------------------------------------------------|-----------------------------------|
-| Latxa corpus v1.1                 | https://huggingface.co/datasets/HiTZ/latxa-corpus-v1.1                  | phase 3, Baseline, validation     |
-| OpenSubtitles                     | https://opus.nlpl.eu/OpenSubtitles/                                     | phase 2, synthetic text           |
-| BasqueParl / EuskañolDS           | **TODO:** link                                                          | phase 2 (Spanish)                 |
+| Latxa corpus v1.1                 | https://huggingface.co/datasets/HiTZ/latxa-corpus-v1.1                  | Baseline, phase 3, validation, Basque tokenizer, TokAlign |
+| CulturaX (Spanish, English)       | https://huggingface.co/datasets/uonlp/CulturaX                          | phase 1 source text, TokAlign     |
+| Wikipedia dumps (Spanish, English)| https://dumps.wikimedia.org                                             | phase 1 source text               |
+| OpenSubtitles v2024               | https://opus.nlpl.eu/OpenSubtitles/                                     | phase 2 (es-eu and en-eu pairs)   |
+| BasqueParl (343,000 lines)        | Escribano et al. (2022), **TODO:** link                                 | phase 2 (Spanish)                 |
+| EuskañolDS silver corpus (20,008) | Heredia et al. (2025), **TODO:** link                                   | phase 2 (Spanish)                 |
 | BaSCo corpus                      | **TODO:** link                                                          | code-switching reference          |
-| CCMatrix, ParaCrawl v9, Elhuyar   | **TODO:** links (OPUS / paracrawl.eu / Elhuyar)                         | EnerGIZAr alignment (4M pairs)    |
+| CCMatrix, ParaCrawl v9, Elhuyar   | https://opus.nlpl.eu (CCMatrix, ParaCrawl, Elhuyar)                     | EnerGIZAr alignment               |
+| Apertium eu-es, eu-en dictionaries| https://github.com/apertium                                             | phase 1 substitution, word-level alignment |
 | FLORES-200                        | https://github.com/facebookresearch/flores                              | perplexity, alignment analyses    |
 | BasqueGLUE                        | https://huggingface.co/datasets/orai-nlp/basqueGLUE                     | downstream evaluation             |
 | EusProficiency / EusReading       | https://huggingface.co/datasets/HiTZ/EusProficiency, `HiTZ/EusReading`  | downstream evaluation             |
@@ -134,13 +140,14 @@ The CSCL scripts train one phase at a time (`--phase 1a|1b|1c|2|3`), each resumi
 
 ### TokAlign
 
-The Spanish–Basque alignment matrix is built with TokAlign (GloVe on 50k Spanish and 50k Basque sentences, cosine similarity, argmax copy, identity for shared tokens). Stabilization: 2,500 steps with only the embeddings trainable (learning rate 6.4e-4), then 2,500 steps of full training (5e-5), warmup ratio 0.03.
+The Basque target tokenizer (BPE, 50,257 tokens) is trained on 200,000 Latxa sentences (`src/Training/train_tokenizer.py`, seed 42). The Spanish–Basque alignment matrix is built with TokAlign (GloVe on 50,000 Spanish CulturaX and 50,000 Basque Latxa sentences, cosine similarity, argmax copy, identity for shared tokens). Stabilization uses a separate 150,000-sample corpus (120,000 Latxa and 30,000 Spanish CulturaX sentences, seed 0): 2,500 steps with only the embeddings trainable (learning rate 6.4e-4), then 2,500 steps of full training (5e-5), warmup ratio 0.03, effective batch 128, context length 1,024, DeepSpeed ZeRO-3, bf16.
 
 ### EnerGIZAr
 
-1. `src/giza/tokenize_parallel.py` and `src/giza/giza_full_pipeline.sh` run GIZA++ (mgiza + Moses `train-model.perl`, IBM Model 4, `grow-diag-final-and`) on the cleaned parallel data.
-2. `src/Training/build_energizar_embeddings.py` builds the row-normalised translation matrix (δ = 0.01, fallback to the best-aligned source token when the maximum aligned probability is below 0.1) and initialises the model.
-3. Coverage: 10.1% identity, 31.4% aligned, 58.5% fallback.
+1. `src/data_creation/clean_parallel_corpus.py` deduplicates and filters the CCMatrix, ParaCrawl v9 and Elhuyar pairs (about 10.55M raw, 10,071,898 after cleaning) and subsamples 4M pairs (seed 42). OpenSubtitles is deliberately excluded, since it is used in phase 2 of the curriculum.
+2. `src/giza/tokenize_parallel.py` and `src/giza/giza_full_pipeline.sh` run GIZA++ (mgiza + Moses `train-model.perl`; Models 1, HMM, 3 and 4, five iterations each; maximum fertility 10, maximum sentence length 101; `grow-diag-final-and`).
+3. `src/Training/build_energizar_embeddings.py` builds the row-normalised translation matrix (δ = 0.01, fallback to a normal distribution around the mean source embedding when the maximum aligned probability is at most 0.1, identity for shared tokens) and initialises the model.
+4. Coverage of the target vocabulary: 5,099 tokens (10.1%) identity, 15,770 (31.4%) aligned, 29,389 (58.5%) fallback.
 
 ## Pretrained checkpoints
 
@@ -171,7 +178,7 @@ The TokAlign (stabilization only) and EnerGIZAr (initialization only) checkpoint
 |---------------------------------------|---------------------------------|-------------------------------------------------|-----------------------------------------------|
 | Perplexity, Basque FLORES-200         | `calculate_perplexity.sh`       | `src/Evaluation/ppl_bootstrap.py`               | 3 bootstrap seeds                             |
 | MultiBLiMP                            | `eval_multiblimp.sh`            | `multiblimp/scripts/lm_eval/eval_model.py`      | deterministic, single run                     |
-| BasqueGLUE                            | `eval_basqueglue.sh`            | `src/Evaluation/eval_basqueglue_multiseed.py`   | 5-shot, seeds 42/123/2024 (0-shot: one seed)  |
+| BasqueGLUE (BEC, BHTC, coref, QNLI, Vaxx, WiC) | `eval_basqueglue.sh` | `src/Evaluation/eval_basqueglue_multiseed.py`   | 5-shot, seeds 42/123/2024 (0-shot: one seed)  |
 | EusReading                            | `eval_eus_read.sh`              | `src/Evaluation/evaluate_eus_read.py`           | 5-shot, single run                            |
 | EusProficiency                        | `eval_eus_prof.sh`              | `src/Evaluation/evaluate_eus_prof.py`           | 5-shot, single run                            |
 | Sentence-level cosine / Jaccard alignment | `run_alignment.sh`, `alignment_random.sh` | `alignment_multiseed.py`, `jacard_multiseed.py`, `random_cosine.py`, `random_jaccard.py` | FLORES-200 pairs, mean-pooled last layer, seeds 42/123/2024 |
@@ -191,13 +198,3 @@ Raw cosine and Jaccard alignment are inflated by anisotropy, especially for GPT-
 - Two results are unexplained: the TokAlign-CSCL drop on BasqueGLUE Vaxx and the Baseline outlier on EusReading.
 - Training from scratch needs the data sources above and a GPU with bf16 support. Exact numbers may differ slightly because GPU training is not bit-wise deterministic.
 
-## Citation
-
-```bibtex
-@mastersthesis{elcoro2026basque,
-  author = {Elcoro Alberdi, Irantzu},
-  title  = {TODO: thesis title},
-  school = {University of G{\"o}ttingen},
-  year   = {2026}
-}
-```

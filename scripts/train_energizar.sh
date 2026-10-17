@@ -28,12 +28,8 @@ python -c "import torch; print('CUDA:', torch.cuda.is_available())"
 
 # OUT="$BASE/dumped/energizar-v2"
 
-# python code/train_energizar_v2.py --phase 1a --output_dir "$OUT"
-# python code/train_energizar_v2.py --phase 1b --output_dir "$OUT" --resume_from_checkpoint "$OUT/phase_1a/final_milestone"
-# python code/train_energizar_v2.py --phase 1c --output_dir "$OUT" --resume_from_checkpoint "$OUT/phase_1b/final_milestone"
-# python code/train_energizar_v2.py --phase 2  --output_dir "$OUT" --resume_from_checkpoint "$OUT/phase_1c/final_milestone"
-# python code/train_energizar_v2.py --phase 3  --output_dir "$OUT" --resume_from_checkpoint "$OUT/phase_2/final_milestone"
-
-python code/train_energizar_v2.py --phase 3 \
-    --output_dir /mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/energizar-v2 \
-    --resume_from_checkpoint /mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/energizar-v2/phase_3/checkpoint-360000
+python code/train_energizar.py --phase 1a --output_dir "$OUT"
+python code/train_energizar.py --phase 1b --output_dir "$OUT" --resume_from_checkpoint "$OUT/phase_1a/final_milestone"
+python code/train_energizar.py --phase 1c --output_dir "$OUT" --resume_from_checkpoint "$OUT/phase_1b/final_milestone"
+python code/train_energizar.py --phase 2  --output_dir "$OUT" --resume_from_checkpoint "$OUT/phase_1c/final_milestone"
+python code/train_energizar.py --phase 3  --output_dir "$OUT" --resume_from_checkpoint "$OUT/phase_2/final_milestone"

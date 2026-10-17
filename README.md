@@ -73,13 +73,14 @@ These are cloned separately and are not part of the repository.
 | mosesdecoder | https://github.com/moses-smt/mosesdecoder            | `08e782040189e0abb3b43a4ec9245e6179e39eca` | `train-model.perl` pipeline  |
 | TokAlign     | https://github.com/ZNLP/TokAlign                     | `3ef5bc9215ff703a134e06030f5474ade36e5db6` | vocabulary alignment         |
 | MultiBLiMP   | https://github.com/catherinearnett/multiblimp        | `dcd23bcd2ddf3e85c616eef1dc8ea0dd15f3482b` | morphosyntactic evaluation   |
-| Apertium     | https://github.com/apertium (`apertium-eu-es`, `apertium-eu-en`) | **TODO:** versions             | bilingual dictionaries       |
+| Apertium     | https://github.com/apertium/apertium-eu-es, https://github.com/apertium/apertium-eu-en | `apertium-eu-es` 0.3.4, `apertium-eu-en` 0.3.3 (package versions; no commit hash recorded) | bilingual dictionaries (only the `.dix` files are used, nothing is compiled) |
 
 ```bash
 git clone https://github.com/moses-smt/mgiza && git -C mgiza checkout 6105035c
 git clone https://github.com/moses-smt/mosesdecoder && git -C mosesdecoder checkout 08e78204
 git clone https://github.com/ZNLP/TokAlign && git -C TokAlign checkout 3ef5bc92
 git clone https://github.com/catherinearnett/multiblimp && git -C multiblimp checkout dcd23bcd
+git clone https://github.com/apertium/apertium-eu-es && git clone https://github.com/apertium/apertium-eu-en   # use the releases matching the versions above
 git -C multiblimp apply ../patches/multiblimp.patch      # adds --local_model_path
 git -C TokAlign apply ../patches/tokalign.patch          # TODO: create this patch
 ```
@@ -96,9 +97,8 @@ The corpora are not redistributed. Download them from the sources below. `src/da
 | CulturaX (Spanish, English)       | https://huggingface.co/datasets/uonlp/CulturaX                          | phase 1 source text, TokAlign     |
 | Wikipedia dumps (Spanish, English)| https://dumps.wikimedia.org                                             | phase 1 source text               |
 | OpenSubtitles v2024               | https://opus.nlpl.eu/OpenSubtitles/                                     | phase 2 (es-eu and en-eu pairs)   |
-| BasqueParl (343,000 lines)        | Escribano et al. (2022), **TODO:** link                                 | phase 2 (Spanish)                 |
-| EuskañolDS silver corpus (20,008) | Heredia et al. (2025), **TODO:** link                                   | phase 2 (Spanish)                 |
-| BaSCo corpus                      | **TODO:** link                                                          | code-switching reference          |
+| BasqueParl (343,000 lines)        | https://huggingface.co/datasets/HiTZ/basqueparl (Escribano et al., 2022) | phase 2 (Spanish)                |
+| EuskañolDS silver corpus (20,008) | https://huggingface.co/datasets/HiTZ/EuskanolDS (Heredia et al., 2025)  | phase 2 (Spanish)                 |
 | CCMatrix, ParaCrawl v9, Elhuyar   | https://opus.nlpl.eu (CCMatrix, ParaCrawl, Elhuyar)                     | EnerGIZAr alignment               |
 | Apertium eu-es, eu-en dictionaries| https://github.com/apertium                                             | phase 1 substitution, word-level alignment |
 | FLORES-200                        | https://github.com/facebookresearch/flores                              | perplexity, alignment analyses    |
@@ -106,20 +106,22 @@ The corpora are not redistributed. Download them from the sources below. `src/da
 | EusProficiency / EusReading       | https://huggingface.co/datasets/HiTZ/EusProficiency, `HiTZ/EusReading`  | downstream evaluation             |
 | MultiBLiMP                        | https://github.com/catherinearnett/multiblimp                           | morphosyntactic evaluation        |
 
-Expected data folder: `data/` at the repository root (**TODO:** confirm; some scripts may still use absolute paths).
+Expected data folder: `data/` at the repository root. To use another location, set the environment variable `THESIS_DATA` (read by `src/data_creation/data_paths.py`).
+
+OpenSubtitles is downloaded from OPUS in Moses format and unpacked into `data/es-eu.txt/` (`OpenSubtitles.es-eu.es`, `OpenSubtitles.es-eu.eu`) and `data/en-eu.txt/` for English. BasqueParl is read from the Hugging Face cache (`basqueparl-v1.1.tsv`), EuskañolDS from `data/EuskanolDS/silver.txt`.
 
 ### Building the training data
 
-Run in this order. **TODO:** confirm the order and arguments of each script.
+Scripts are in `src/data_creation/` and run in this order (Spanish pipeline shown; the English one uses the same scripts with `_en`). **TODO:** confirm the download and dictionary steps.
 
-1. `download_latxa.py`, `download_data.py`, `basco_corpus.py`: fetch the sources.
-2. `cache_raw_spa.py`, `cache_raw_en.py`: cache the raw Spanish and English text.
-3. `clean_local_apertium.py`: prepare the Apertium dictionaries (`data/curriculum_dictionaries*`).
-4. `compile_phase_1_spa.py`, `compile_phase_2_spa.py`: Spanish curriculum, phases 1 and 2.
-5. `2_compile_phase_1_en.py`, `3_compile_phase_2_en.py`: English curriculum, phases 1 and 2.
-6. `clean_parallel_corpus.py`: clean and subsample the parallel data for GIZA++ (4M pairs).
+1. `download_latxa.py` downloads the Latxa corpus (train/valid/test, five sub-corpora). `download_data.py` builds the TokAlign stabilization corpus (150,000 CulturaX samples: 120,000 Basque and 30,000 Spanish, shuffled with seed 0).
+2. `clean_local_apertium.py --lang es` / `--lang en`: build the three dictionaries (adjectives and adverbs, lexical verbs, common nouns) from the Apertium `apertium-eu-es` / `apertium-eu-en` `.dix` files. Output: `data/curriculum_dictionaries/` (`dict_1_adj_adv.txt`, `dict_2_verbs.txt`, `dict_3_nouns.txt`) and `data/curriculum_dictionaries_en/` (same names with `_en`). Both folders are included in the repository. **TODO:** record the commit of each Apertium repository.
+3. `1_cache_raw_spa.py` / `1_cache_raw_en.py`: cache 1,374,333 raw lines, interleaving Wikipedia (20231101) and CulturaX 50/50 (seed 42) into `raw_spanish_master.txt` / `raw_english_master.txt`.
+4. `2_compile_phase_1_spa.py` / `2_compile_phase_1_en.py`: build phases 1a, 1b, 1c from three disjoint blocks of 458,111 raw lines. Words that match a dictionary entry (case-insensitive, exact surface form) are replaced by the Basque lemma; a list of high-ambiguity function words (22 Spanish, 34 English) is never replaced. The dictionaries are cumulative: 1a uses adjectives and adverbs, 1b adds verbs, 1c adds nouns. No sentence-level POS tagging is done; the POS information comes from the separate dictionaries.
+5. `3_compile_phase_2_spa.py` / `3_compile_phase_2_en.py`: build phase 2 (1,374,333 lines). Spanish: EuskañolDS lines, then BasqueParl lines, then OpenSubtitles blocks that join the previous line in one language with the current line in the other (alternating direction); a second pass with the order reversed fills any remaining budget. English: OpenSubtitles blocks only, in two passes (the second inverts which language leads) if the budget is not filled.
+6. `clean_parallel_corpus.py --es_in ... --eu_in ... --es_out ... --eu_out ...`: drops empty and duplicate pairs and pairs whose word-length ratio exceeds 3, applied to the concatenated CCMatrix, ParaCrawl v9 and Elhuyar files. The three corpora are concatenated (CCMatrix, ParaCrawl v9, Elhuyar, Spanish side and Basque side in the same order) before this step. The 4M-pair subsample is drawn after tokenisation, see the EnerGIZAr section.
 
-Random seeds are fixed inside the scripts. **TODO:** confirm that every generation script sets its seed.
+Phase 3 reads the Latxa corpus directly. The only random seed in the pipeline above is the interleaving in step 3 (42); steps 4 and 5 are deterministic. **TODO:** confirm the same holds for the English scripts.
 
 ## Training
 
@@ -144,10 +146,12 @@ The Basque target tokenizer (BPE, 50,257 tokens) is trained on 200,000 Latxa sen
 
 ### EnerGIZAr
 
-1. `src/data_creation/clean_parallel_corpus.py` deduplicates and filters the CCMatrix, ParaCrawl v9 and Elhuyar pairs (about 10.55M raw, 10,071,898 after cleaning) and subsamples 4M pairs (seed 42). OpenSubtitles is deliberately excluded, since it is used in phase 2 of the curriculum.
-2. `src/giza/tokenize_parallel.py` and `src/giza/giza_full_pipeline.sh` run GIZA++ (mgiza + Moses `train-model.perl`; Models 1, HMM, 3 and 4, five iterations each; maximum fertility 10, maximum sentence length 101; `grow-diag-final-and`).
-3. `src/Training/build_energizar_embeddings.py` builds the row-normalised translation matrix (δ = 0.01, fallback to a normal distribution around the mean source embedding when the maximum aligned probability is at most 0.1, identity for shared tokens) and initialises the model.
-4. Coverage of the target vocabulary: 5,099 tokens (10.1%) identity, 15,770 (31.4%) aligned, 29,389 (58.5%) fallback.
+1. `src/data_creation/clean_parallel_corpus.py` deduplicates and filters the concatenated CCMatrix, ParaCrawl v9 and Elhuyar pairs (about 10.55M raw, 10,071,898 after cleaning) into `data/combined_clean.{es,eu}`. OpenSubtitles is deliberately excluded, since it is used in phase 2 of the curriculum.
+2. `src/giza/tokenize_parallel.py` tokenises the Spanish side with the DeepESP/gpt2-spanish tokenizer and the Basque side with the target tokenizer (`basque_tokenizer_50257/`) and drops pairs longer than 101 tokens, writing `data/parallel.{es,eu}.tok`.
+3. `src/giza/subsample_parallel.sh` draws 4,000,000 pairs with `shuf --random-source=<(yes 42)` (GNU coreutils) into `src/giza/parallel_sub.{es,eu}.tok`.
+4. GIZA++ (mgiza + Moses `train-model.perl`; Models 1, HMM, 3 and 4, five iterations each; maximum fertility 10, maximum sentence length 101; `grow-diag-final-and`) is run on `parallel_sub`: **TODO:** paste the exact `train-model.perl` / `mgiza` commands from `giza_alignment.sh` and `giza_full_pipeline.sh`.
+5. `src/Training/build_energizar_embeddings.py` builds the row-normalised translation matrix (δ = 0.01, fallback to a normal distribution around the mean source embedding when the maximum aligned probability is at most 0.1, identity for shared tokens) and initialises the model.
+6. Coverage of the target vocabulary: 5,099 tokens (10.1%) identity, 15,770 (31.4%) aligned, 29,389 (58.5%) fallback.
 
 ## Pretrained checkpoints
 
@@ -198,3 +202,13 @@ Raw cosine and Jaccard alignment are inflated by anisotropy, especially for GPT-
 - Two results are unexplained: the TokAlign-CSCL drop on BasqueGLUE Vaxx and the Baseline outlier on EusReading.
 - Training from scratch needs the data sources above and a GPU with bf16 support. Exact numbers may differ slightly because GPU training is not bit-wise deterministic.
 
+## Citation
+
+```bibtex
+@mastersthesis{elcoro2026basque,
+  author = {Elcoro Alberdi, Irantzu},
+  title  = {Bridging the Representation Gap: Combining Vocabulary Adaptation and Code-Switching for Low Resource Languages},
+  school = {University of G{\"o}ttingen},
+  year   = {2026}
+}
+```

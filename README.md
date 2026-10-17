@@ -3,9 +3,7 @@
 Code for the MSc thesis of **Irantzu Elcoro Alberdi** (MSc Applied Data Science, Georg-August-Universität Göttingen, Human-Centered Data Science, September 2026).
 First examiner and supervisor: Prof. Lisa Beinborn · Second examiner: Prof. Caroline Sporleder · Co-supervisor: Zhuojing Huang.
 
-The thesis adapts GPT-2-small-scale models to Basque. This repository contains the code for data construction, training and evaluation; model checkpoints are attached to a release (see below).
-
-> Lines marked **TODO** still need to be checked or filled in before submission. Delete them once done.
+The thesis adapts GPT-2-small-scale models to Basque. This repository contains the code for data construction, training and evaluation; all seven model checkpoints are attached to a release (see [Pretrained checkpoints](#pretrained-checkpoints)).
 
 ## Overview
 
@@ -25,7 +23,7 @@ The thesis adapts two small GPT-2 models to Basque and compares:
 | EnerGIZAr       | GPT-2 Spanish | Basque (EnerGIZAr) | initialization only, no training                  |
 | EnerGIZAr-CSCL  | GPT-2 Spanish | Basque (EnerGIZAr) | initialization, then curriculum                   |
 
-The unadapted GPT-2 Spanish and GPT-2 English are evaluated as references.
+The unadapted GPT-2 Spanish and GPT-2 English are evaluated as references (they are downloaded from the Hugging Face hub).
 
 **Curriculum.** Phases 1a/1b/1c use synthetic code-switched text (POS-guided lemma substitution with Apertium: adjectives and adverbs, verbs, nouns), phase 2 alternates sentences (OpenSubtitles; plus BasqueParl and EuskañolDS for Spanish), and phase 3 is monolingual Basque (Latxa). Every configuration sees the same data budget of 4,123,000 lines (1,374,333 per phase; phase 1 is three subphases of 458,111 lines). Steps per phase: 44,444 / 44,444 / 44,445 / 133,333 / 133,334 (400k in total). Weights are carried over between phases; the optimizer and learning-rate schedule restart in each phase with 5% warmup.
 
@@ -37,7 +35,7 @@ The unadapted GPT-2 Spanish and GPT-2 English are evaluated as references.
 scripts/      SLURM job scripts, one per experiment (train_*.sh, eval_*.sh, ...)
 src/
   data_creation/   download, cleaning and construction of all training data
-  Training/        training scripts (baseline, CSCL, TokAlign, EnerGIZAr)
+  Training/        training scripts (baseline, CSCL, EnerGIZAr)
   giza/            GIZA++ pipeline for EnerGIZAr
   Evaluation/      perplexity, BasqueGLUE, Latxa benchmarks, alignment analyses
   Experiments/     exploratory scripts (not used for reported results)
@@ -50,14 +48,23 @@ results/      small result files
 
 ### Python environment
 
-Python 3.11.9, PyTorch 2.6.0 (CUDA 12.4), Hugging Face `transformers` and `datasets`.
+Python 3.11.9, PyTorch 2.6.0 (CUDA 12.4), Hugging Face `transformers` and `datasets`. `requirements.txt` is a `pip freeze` of the environment used on the cluster.
 
 ```bash
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-The SLURM scripts assume the cluster modules `gcc/13.2.0`, `python/3.11.9` and `cuda`, partition `react`, one GPU per job. Edit `BASE_DIR` at the top of each script to point to your checkout. Provide your own Hugging Face token (`huggingface-cli login`); no token is stored in this repository.
+### Running the job scripts
+
+The SLURM scripts are in `scripts/` and assume the cluster modules `gcc/13.2.0` and `python/3.11.9`, partition `react`, one A100 GPU per job; adapt the `#SBATCH` and `module load` lines to your system. Submit them **from the repository root** (the root is taken from the directory `sbatch` is called in):
+
+```bash
+mkdir -p logs
+sbatch scripts/train_cscl_spanish.sh
+```
+
+Provide your own Hugging Face access (`huggingface-cli login`, or `export HF_TOKEN=...` before `sbatch`); no token is stored in this repository.
 
 ### External tools
 
@@ -108,57 +115,81 @@ OpenSubtitles is downloaded from OPUS in Moses format and unpacked into `data/es
 
 ### Building the training data
 
-Scripts are in `src/data_creation/` and run in this order (Spanish pipeline shown; the English one uses the same scripts with `_en`). **TODO:** confirm the download and dictionary steps.
+Scripts are in `src/data_creation/` and run in this order (Spanish pipeline shown; the English one uses the same scripts with `_en`).
 
-1. `download_latxa.py` downloads the Latxa corpus (train/valid/test, five sub-corpora). `download_data.py` builds the TokAlign stabilization corpus (150,000 CulturaX samples: 120,000 Basque and 30,000 Spanish, shuffled with seed 0).
-2. `clean_local_apertium.py --lang es` / `--lang en`: build the three dictionaries (adjectives and adverbs, lexical verbs, common nouns) from the Apertium `apertium-eu-es` / `apertium-eu-en` `.dix` files. Output: `data/curriculum_dictionaries/` (`dict_1_adj_adv.txt`, `dict_2_verbs.txt`, `dict_3_nouns.txt`) and `data/curriculum_dictionaries_en/` (same names with `_en`). Both folders are included in the repository. **TODO:** record the commit of each Apertium repository.
+1. `download_latxa.py` downloads the Latxa corpus (train/valid/test, five sub-corpora) into `data/latxa-corpus-v1.1/`. `download_data.py` builds the TokAlign stabilization corpus (150,000 CulturaX samples: 120,000 Basque and 30,000 Spanish, shuffled with seed 0).
+2. `clean_local_apertium.py --lang es` / `--lang en`: build the three dictionaries (adjectives and adverbs, lexical verbs, common nouns) from the Apertium `apertium-eu-es` / `apertium-eu-en` `.dix` files. Output: `data/curriculum_dictionaries/` (`dict_1_adj_adv.txt`, `dict_2_verbs.txt`, `dict_3_nouns.txt`) and `data/curriculum_dictionaries_en/` (same names with `_en`). Both folders are included in the repository, so this step can be skipped.
 3. `1_cache_raw_spa.py` / `1_cache_raw_en.py`: cache 1,374,333 raw lines, interleaving Wikipedia (20231101) and CulturaX 50/50 (seed 42) into `raw_spanish_master.txt` / `raw_english_master.txt`.
 4. `2_compile_phase_1_spa.py` / `2_compile_phase_1_en.py`: build phases 1a, 1b, 1c from three disjoint blocks of 458,111 raw lines. Words that match a dictionary entry (case-insensitive, exact surface form) are replaced by the Basque lemma; a list of high-ambiguity function words (22 Spanish, 34 English) is never replaced. The dictionaries are cumulative: 1a uses adjectives and adverbs, 1b adds verbs, 1c adds nouns. No sentence-level POS tagging is done; the POS information comes from the separate dictionaries.
 5. `3_compile_phase_2_spa.py` / `3_compile_phase_2_en.py`: build phase 2 (1,374,333 lines). Spanish: EuskañolDS lines, then BasqueParl lines, then OpenSubtitles blocks that join the previous line in one language with the current line in the other (alternating direction); a second pass with the order reversed fills any remaining budget. English: OpenSubtitles blocks only, in two passes (the second inverts which language leads) if the budget is not filled.
-6. `clean_parallel_corpus.py --es_in ... --eu_in ... --es_out ... --eu_out ...`: drops empty and duplicate pairs and pairs whose word-length ratio exceeds 3, applied to the concatenated CCMatrix, ParaCrawl v9 and Elhuyar files. The three corpora are concatenated (CCMatrix, ParaCrawl v9, Elhuyar, Spanish side and Basque side in the same order) before this step. The 4M-pair subsample is drawn after tokenisation, see the EnerGIZAr section.
+6. `clean_parallel_corpus.py --es_in ... --eu_in ... --es_out ... --eu_out ...`: drops empty and duplicate pairs and pairs whose word-length ratio exceeds 3, applied to the concatenated CCMatrix, ParaCrawl v9 and Elhuyar files (the Spanish and Basque sides are concatenated in the same order before this step). The 4M-pair subsample is drawn after tokenisation, see the EnerGIZAr section.
 
-Phase 3 reads the Latxa corpus directly. The only random seed in the pipeline above is the interleaving in step 3 (42); steps 4 and 5 are deterministic.
+The training scripts read the synthetic phases from `data/synthetic_spanish_adj_cs/` (Spanish) and `data/synthetic_english_cs/` (English), and phase 3 and validation from the local Latxa download. The only random seed in steps 1 to 5 is the interleaving in step 3 (42); steps 4 and 5 are deterministic.
 
 ## Training
 
-Each configuration has one job script in `scripts/`. They call the Python scripts in `src/Training/`.
+Each configuration has one job script in `scripts/`. Each script runs all five curriculum phases in order; a job takes a long time, so it can be split with the `PHASES` variable (see below). The job scripts call the Python scripts in `src/Training/`.
 
 | Configuration                    | Job script                                    | Python script                         |
 |----------------------------------|-----------------------------------------------|---------------------------------------|
 | Baseline                         | `scripts/train_baseline.sh`                   | `src/Training/continual_training_es.py` |
 | CSCL-es                          | `scripts/train_cscl_spanish.sh`               | `src/Training/train_cscl_spanish.py`  |
 | CSCL-en                          | `scripts/train_cscl_english.sh`               | `src/Training/train_cscl_english.py`  |
-| TokAlign, TokAlign-CSCL          |  `scripts/train_tokalign.sh`                  | `src/Training/train_cscl_spanish.py`      |
-| EnerGIZAr, EnerGIZAr-CSCL        | `scripts/train_energizar.sh`               | `src/Training/build_energizar_embeddings.py`, `train_energizar.py` |
+| TokAlign                         | TokAlign's own scripts, see [TokAlign](#tokalign) | (TokAlign repository)             |
+| TokAlign-CSCL                    | `scripts/train_tokalign.sh`                   | `src/Training/train_cscl_spanish.py` (with `--base_model`) |
+| EnerGIZAr                        | see [EnerGIZAr](#energizar)                   | `src/Training/build_energizar_embeddings.py` |
+| EnerGIZAr-CSCL                   | `scripts/train_energizar.sh`                  | `src/Training/train_energizar.py`     |
 | Basque tokenizer                 | `scripts/train_tokenizer.sh`                  | `src/Training/train_tokenizer.py`     |
 
-The CSCL scripts train one phase at a time (`--phase 1a|1b|1c|2|3`), each resuming from the previous phase's `final_milestone` folder.
-Disclaimer: some paths in the scripts might need to be changed.
+**Output folders.** A CSCL job writes everything under `dumped/<name>/`:
+
+```
+dumped/cscl_spanish/
+  phase_1a/   checkpoint-*/      intermediate checkpoints (last two kept)
+              final_milestone/   weights + tokenizer at the end of the phase
+  phase_1b/   starts from phase_1a/final_milestone
+  phase_1c/   starts from phase_1b/final_milestone
+  phase_2/    starts from phase_1c/final_milestone
+  phase_3/    starts from phase_2/final_milestone   (phase_3/final_milestone = final model)
+```
+
+Every phase restarts the optimizer and the cosine schedule with a 5% warmup. To run only some phases (for example because of the time limit) or to resume, set `PHASES`; it resumes from the `final_milestone` folder of the previous phase:
+
+```bash
+PHASES="1a 1b 1c" sbatch scripts/train_cscl_spanish.sh
+PHASES="2 3" sbatch scripts/train_cscl_spanish.sh
+```
+
+`OUT=/path sbatch ...` changes the output folder. TokAlign-CSCL uses the stabilised TokAlign model (`TokAlign/log/gpt2/0_spanish_S2`, override with `TOKALIGN_CHECKPOINT`) as its starting point.
 
 ### TokAlign
 
-The Basque target tokenizer (BPE, 50,257 tokens) is trained on 200,000 Latxa sentences (`src/Training/train_tokenizer.py`, seed 42). The Spanish–Basque alignment matrix is built with TokAlign (GloVe on 50,000 Spanish CulturaX and 50,000 Basque Latxa sentences, cosine similarity, argmax copy, identity for shared tokens). Stabilization uses a separate 150,000-sample corpus (120,000 Latxa and 30,000 Spanish CulturaX sentences, seed 0): 2,500 steps with only the embeddings trainable (learning rate 6.4e-4), then 2,500 steps of full training (5e-5), warmup ratio 0.03, effective batch 128, context length 1,024, DeepSpeed ZeRO-3, bf16.
+The Basque target tokenizer (BPE, 50,257 tokens) is trained on 200,000 Latxa sentences (`src/Training/train_tokenizer.py`, seed 42). The Spanish–Basque alignment matrix is built with TokAlign (GloVe on 50,000 Spanish CulturaX and 50,000 Basque Latxa sentences, cosine similarity, argmax copy, identity for shared tokens). Stabilization uses a separate 150,000-sample corpus (120,000 Latxa and 30,000 Spanish CulturaX sentences, seed 0; built by `src/data_creation/download_data.py`): 2,500 steps with only the embeddings trainable (learning rate 6.4e-4), then 2,500 steps of full training (5e-5), warmup ratio 0.03, effective batch 128, context length 1,024, DeepSpeed ZeRO-3, bf16. The alignment, initialisation and stabilization steps use the scripts of the TokAlign repository (`script/convert2glove_corpus.sh`, `train_glove.sh`, `token_align.sh`, `init_model.sh`, ...), with the local modifications in `patches/tokalign.patch`. The stabilised model is written to `TokAlign/log/gpt2/0_spanish_S2`; this model is the **TokAlign** configuration and the starting point of TokAlign-CSCL.
 
 ### EnerGIZAr
 
 1. `src/data_creation/clean_parallel_corpus.py` deduplicates and filters the concatenated CCMatrix, ParaCrawl v9 and Elhuyar pairs (about 10.55M raw, 10,071,898 after cleaning) into `data/combined_clean.{es,eu}`. OpenSubtitles is deliberately excluded, since it is used in phase 2 of the curriculum.
 2. `src/giza/tokenize_parallel.py` tokenises the Spanish side with the DeepESP/gpt2-spanish tokenizer and the Basque side with the target tokenizer (`basque_tokenizer_50257/`) and drops pairs longer than 101 tokens, writing `data/parallel.{es,eu}.tok`.
 3. `src/giza/subsample_parallel.sh` draws 4,000,000 pairs with `shuf --random-source=<(yes 42)` (GNU coreutils) into `src/giza/parallel_sub.{es,eu}.tok`.
-4. GIZA++ (mgiza + Moses `train-model.perl`; Models 1, HMM, 3 and 4, five iterations each; maximum fertility 10, maximum sentence length 101; `grow-diag-final-and`) is run on `parallel_sub`: **TODO:** paste the exact `train-model.perl` / `mgiza` commands from `giza_alignment.sh` and `giza_full_pipeline.sh`.
-5. `src/Training/build_energizar_embeddings.py` builds the row-normalised translation matrix (δ = 0.01, fallback to a normal distribution around the mean source embedding when the maximum aligned probability is at most 0.1, identity for shared tokens) and initialises the model.
+4. GIZA++ (mgiza + Moses `train-model.perl`; Models 1, HMM, 3 and 4, five iterations each; maximum fertility 10, maximum sentence length 101; `grow-diag-final-and`, `-mgiza -mgiza-cpus 8 -parallel -last-step 3`, then `mgiza` is re-run with dumps enabled to write the translation tables) is run on `parallel_sub`. The job scripts are `src/giza/giza_alignment.sh` (first run, on a smaller `parallel` corpus, output `full-run/`) and `src/giza/giza_full_pipeline.sh` (final run on `parallel_sub`, output `full-run-v2/`; the `train-model.perl` command is kept as a comment in that file). Both contain absolute paths of the author's cluster (`/mnt/vast-react/...`): adapt the `PATH` entries and the working directory to your setup.
+5. `src/Training/build_energizar_embeddings.py` builds the row-normalised translation matrix (δ = 0.01, fallback to a normal distribution around the mean source embedding when the maximum aligned probability is at most 0.1, identity for shared tokens) and initialises the model. This initialised model is the **EnerGIZAr** configuration and the starting point of EnerGIZAr-CSCL.
 6. Coverage of the target vocabulary: 5,099 tokens (10.1%) identity, 15,770 (31.4%) aligned, 29,389 (58.5%) fallback.
 
 ## Pretrained checkpoints
 
-Final checkpoints are attached to the [**v1.0-checkpoints** release](https://github.com/irantzu01/Master-thesis/releases/tag/v1.0-checkpoints) (weights, config and tokenizer; no optimizer state).
+All seven configurations are attached to the [**v1.0-checkpoints** release](https://github.com/irantzu01/Master-thesis/releases/tag/v1.0-checkpoints) (weights, config and tokenizer; no optimizer state). The CSCL, TokAlign and EnerGIZAr models are the final models used for the results in the thesis.
 
 | Configuration   | File                                                                                                                  |
 |-----------------|-----------------------------------------------------------------------------------------------------------------------|
 | Baseline        | [`baseline.tar.gz`](https://github.com/irantzu01/Master-thesis/releases/download/v1.0-checkpoints/baseline.tar.gz)               |
 | CSCL-es         | [`cscl-es.tar.gz`](https://github.com/irantzu01/Master-thesis/releases/download/v1.0-checkpoints/cscl-es.tar.gz)                 |
 | CSCL-en         | [`cscl-en.tar.gz`](https://github.com/irantzu01/Master-thesis/releases/download/v1.0-checkpoints/cscl-en.tar.gz)                 |
+| TokAlign        | [`tokalign.tar.gz`](https://github.com/irantzu01/Master-thesis/releases/download/v1.0-checkpoints/tokalign.tar.gz)               |
 | TokAlign-CSCL   | [`tokalign-cscl.tar.gz`](https://github.com/irantzu01/Master-thesis/releases/download/v1.0-checkpoints/tokalign-cscl.tar.gz)     |
+| EnerGIZAr       | [`energizar.tar.gz`](https://github.com/irantzu01/Master-thesis/releases/download/v1.0-checkpoints/energizar.tar.gz)             |
 | EnerGIZAr-CSCL  | [`energizar-cscl.tar.gz`](https://github.com/irantzu01/Master-thesis/releases/download/v1.0-checkpoints/energizar-cscl.tar.gz)   |
+
+The TokAlign, TokAlign-CSCL, EnerGIZAr and EnerGIZAr-CSCL models use the Basque tokenizer (50,257 tokens) that is included in each archive; Baseline, CSCL-es and CSCL-en use the original GPT-2 Spanish or English tokenizer. The unadapted references are `DeepESP/gpt2-spanish` and `openai-community/gpt2` from the Hugging Face hub.
 
 ```bash
 mkdir cscl-es && tar -xzf cscl-es.tar.gz -C cscl-es
@@ -169,7 +200,7 @@ model = AutoModelForCausalLM.from_pretrained("./cscl-es")
 tokenizer = AutoTokenizer.from_pretrained("./cscl-es")
 ```
 
-The TokAlign (stabilization only) and EnerGIZAr (initialization only) checkpoints are not in the release (**TODO:** add them if wanted). The evaluation scripts have a `MODELS` dictionary at the top; point its paths to the unpacked folders.
+The evaluation scripts have a `MODELS` dictionary at the top; point its paths to the unpacked folders.
 
 ## Evaluation
 
@@ -184,7 +215,7 @@ The TokAlign (stabilization only) and EnerGIZAr (initialization only) checkpoint
 | Word-level alignment                  | `word_alignment.sh`             | `src/Evaluation/word_alignment.py`              | 200 sampled Apertium pairs                    |
 | t-SNE of parallel sentences           | `tsne.sh`                       | `src/Evaluation/tsne_crosslingual_alignment.py` | middle layer                                  |
 
-**TODO:** confirm which alignment scripts are final (`evaluate_alignment.py`, `evaluate_jacard.py`, `eval_muse.py` look older).
+The evaluation job scripts may contain paths of the author's cluster; adapt them to your setup.
 
 ### Random-pair baseline
 
@@ -196,6 +227,8 @@ Raw cosine and Jaccard alignment are inflated by anisotropy, especially for GPT-
 - MultiBLiMP per-item outputs were written to a shared results folder and overwritten between models, so only aggregate scores are available and no error bars are reported.
 - Two results are unexplained: the TokAlign-CSCL drop on BasqueGLUE Vaxx and the Baseline outlier on EusReading.
 - Training from scratch needs the data sources above and a GPU with bf16 support. Exact numbers may differ slightly because GPU training is not bit-wise deterministic.
+- The 4M-pair subsample for the GIZA alignment is reproducible with the command given above, but the shuffle can differ between GNU coreutils versions.
+- Some scripts in `src/Evaluation/` (`evaluate_alignment.py`, `evaluate_jacard.py`, `eval_muse.py`) are earlier versions and were not used for the reported results.
 
 ## Citation
 

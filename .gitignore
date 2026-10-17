@@ -1,15 +1,45 @@
-mosesdecoder/
-mgiza/
-multiblimp/
-dumped/
-data/
-logs/
-test-run/
+# environments and caches
 .venv/
 __pycache__/
-*.pt
-*.bin
+*.pyc
+.ipynb_checkpoints/
+hf_cache/
+
+# third-party code (cloned separately, see README)
+mgiza/
+mosesdecoder/
+multiblimp/
+TokAlign/
+
+# data: not redistributed (see README), except small files that are ours
+data/*
+!data/curriculum_dictionaries/
+!data/curriculum_dictionaries_en/
+
+# models, training state, logs, job output
+dumped/
+logs/
+test-run/
 *.safetensors
+*.pt
+*.pth
+*.bin
+*.ckpt
+*.tar.gz
+*.tar.zst
 *.zip
-*.tok
+*.npy
+
+# per-item evaluation outputs (keep the *_summary.json files)
+src/Evaluation/results/*.jsonl
+results/*.jsonl
+
+# GIZA++ working files
+src/giza/*.tok
+src/giza/*.BACKUP
+src/giza/logs/
+
+# misc
 *.BACKUP
+.DS_Store
+*.tok

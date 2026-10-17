@@ -1,0 +1,132 @@
+diff --git a/scripts/lm_eval/eval_model.py b/scripts/lm_eval/eval_model.py
+index 5518b8e..c149272 100644
+--- a/scripts/lm_eval/eval_model.py
++++ b/scripts/lm_eval/eval_model.py
+@@ -13,7 +13,7 @@ src_path = os.path.join(project_root, "multiblimp", "src", "lm_eval")
+ sys.path.append(scripts_path)
+ sys.path.append(src_path)
+ 
+-from load_model import load_hf_model
++from load_model import load_hf_model, load_local_model
+ from score import score_tse
+ 
+ # Check if CUDA is available and print status
+@@ -29,6 +29,7 @@ parser.add_argument('--src_dir', help='Source directory', default=src_path)
+ parser.add_argument('--results_dir', help='Dir to write results to', default=None)
+ parser.add_argument('--cache_dir', help='(optional) HF cache dir', default="/scratch-shared/jumelet")
+ parser.add_argument('--hf_token', help='Huggingface token (file or token itself)', default=None)
++parser.add_argument('--local_model_path', help='Path to local model (overrides --model_name weights)', default=None)
+ args = parser.parse_args()
+ 
+ # Handle hf_token input
+@@ -39,15 +40,26 @@ if args.hf_token:
+             hf_token = f.read().strip()  # Read the token from the file
+     else:
+         hf_token = args.hf_token  # Use the provided token directly
++        
+ 
+ print(f"Loading model: {args.model_name} @ step {args.revision}")
+-lm = load_hf_model(
+-    args.model_name,
+-    no_cache=False,
+-    token=hf_token,  # Will pass None if not provided
+-    cache_dir=args.cache_dir,
+-    revision_step=str(args.revision)
+-)
++if args.local_model_path:
++    # We pass args.model_name (DeepESP/gpt2-spanish) straight into tokenizer_name
++    lm = load_local_model(
++        model_path=args.local_model_path,
++        tokenizer_name=args.model_name,  
++        no_cache=False,
++        token=hf_token,
++        cache_dir=args.cache_dir,
++    )
++else:
++    lm = load_hf_model(
++        args.model_name,
++        no_cache=False,
++        token=hf_token,
++        cache_dir=args.cache_dir,
++        revision_step=str(args.revision)
++    )
+ 
+ pair_files = glob(os.path.join(args.data_dir, "**/*.tsv"), recursive=True)
+ if not pair_files:
+diff --git a/src/lm_eval/load_model.py b/src/lm_eval/load_model.py
+index cc5dc95..8e8f6d4 100644
+--- a/src/lm_eval/load_model.py
++++ b/src/lm_eval/load_model.py
+@@ -87,3 +87,71 @@ def load_goldfish_model(langcode: str, size: str, script: Optional[str] = None,
+                 break
+ 
+         return model
++    
++
++def load_local_model(model_path: str, tokenizer_name: str, no_cache=False, **kwargs):
++    """
++    Load a local model checkpoint but use a HuggingFace hub tokenizer.
++    """
++    model = None
++    tokenizer = None
++
++    # Strip out revision_step from kwargs if it got passed along, 
++    # since local checkpoints don't use HF branches/commits
++    kwargs.pop('revision_step', None)
++    revision_step = "main"
++
++    try:
++        if no_cache:
++            with tempfile.TemporaryDirectory() as tmpdirname:
++                # Load weights from the local directory
++                model = AutoModelForCausalLM.from_pretrained(
++                    model_path,
++                    cache_dir=tmpdirname,
++                    **kwargs
++                )
++                # Load tokenizer from the HuggingFace Hub name
++                tokenizer = AutoTokenizer.from_pretrained(
++                    tokenizer_name,
++                    cache_dir=tmpdirname,
++                    revision=revision_step,
++                    **kwargs
++                )
++        else:
++            # Load weights from the local directory
++            model = AutoModelForCausalLM.from_pretrained(
++                model_path,
++                **kwargs
++            )
++            # Load tokenizer from the HuggingFace Hub name
++            tokenizer = AutoTokenizer.from_pretrained(
++                tokenizer_name,
++                revision=revision_step,
++                **kwargs
++            )
++    except OSError as e:
++        print(f"Failed to load local model from '{model_path}' or tokenizer '{tokenizer_name}'")
++        print(f"Error: {e}")
++        return None
++
++    if model is None or tokenizer is None:
++        print(f"Model or tokenizer not loaded properly for local execution.")
++        return None
++
++    print(f"Successfully loaded local model weights from '{model_path}' using tokenizer '{tokenizer_name}'")
++
++    # Set up the execution device
++    device = 'cpu'
++    if torch.cuda.is_available():
++        device = 'cuda'
++    elif torch.backends.mps.is_available():
++        device = 'mps'
++        
++    # Wrap them up exactly how multiblimp expects it
++    ilm_model = scorer.IncrementalLMScorer(
++        model,
++        device=device,
++        tokenizer=tokenizer,
++    )
++
++    return ilm_model
+\ No newline at end of file

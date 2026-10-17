@@ -40,8 +40,8 @@ mkdir -p "$OUTPUT_DIR"
 echo "[INFO] Starting CSCL English Training..."
 
 # 4. Use the absolute path to the python script
-#python code/train_cscl_english.py --phase 1a --output_dir ./dumped/gpt2-cscl-english
-# python code/train_cscl_english.py --phase 1b --output_dir /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english --resume_from_checkpoint /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english/phase_1a/final_milestone
-# python code/train_cscl_english.py --phase 1c --output_dir /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english --resume_from_checkpoint /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english/phase_1b/final_milestone
-# python code/train_cscl_english.py --phase 2  --output_dir /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english --resume_from_checkpoint /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english/phase_1c/final_milestone
+python code/train_cscl_english.py --phase 1a --output_dir ./dumped/gpt2-cscl-english
+python code/train_cscl_english.py --phase 1b --output_dir /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english --resume_from_checkpoint /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english/phase_1a/final_milestone
+python code/train_cscl_english.py --phase 1c --output_dir /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english --resume_from_checkpoint /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english/phase_1b/final_milestone
+python code/train_cscl_english.py --phase 2  --output_dir /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english --resume_from_checkpoint /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english/phase_1c/final_milestone
 python code/train_cscl_english.py --phase 3  --output_dir /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english --resume_from_checkpoint /mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-english/phase_2/final_milestone

@@ -3,7 +3,7 @@
 Code for the MSc thesis of **Irantzu Elcoro Alberdi** (MSc Applied Data Science, Georg-August-Universität Göttingen, Human-Centered Data Science, September 2026).
 First examiner and supervisor: Prof. Lisa Beinborn · Second examiner: Prof. Caroline Sporleder · Co-supervisor: Zhuojing Huang.
 
-The thesis adapts GPT-2-scale models to Basque. This repository contains the code for data construction, training and evaluation; model checkpoints are attached to a release (see below).
+The thesis adapts GPT-2-small-scale models to Basque. This repository contains the code for data construction, training and evaluation; model checkpoints are attached to a release (see below).
 
 > Lines marked **TODO** still need to be checked or filled in before submission. Delete them once done.
 
@@ -46,8 +46,6 @@ plots/        figure scripts and figures used in the thesis
 results/      small result files
 ```
 
-**TODO:** confirm this matches the final repository, and remove or mark legacy files (for example `train_cscl_restart.py`, `train_energizar.py` v1, the `(Copiar)` notebook, `src/giza/*.BACKUP`).
-
 ## Setup
 
 ### Python environment
@@ -58,8 +56,6 @@ Python 3.11.9, PyTorch 2.6.0 (CUDA 12.4), Hugging Face `transformers` and `datas
 python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 ```
-
-**TODO:** add `requirements.txt` (`pip freeze > requirements.txt` inside the working environment) and state the exact `transformers` version. `scripts/requirements.sh` only installs `flash-attn`.
 
 The SLURM scripts assume the cluster modules `gcc/13.2.0`, `python/3.11.9` and `cuda`, partition `react`, one GPU per job. Edit `BASE_DIR` at the top of each script to point to your checkout. Provide your own Hugging Face token (`huggingface-cli login`); no token is stored in this repository.
 
@@ -121,7 +117,7 @@ Scripts are in `src/data_creation/` and run in this order (Spanish pipeline show
 5. `3_compile_phase_2_spa.py` / `3_compile_phase_2_en.py`: build phase 2 (1,374,333 lines). Spanish: EuskañolDS lines, then BasqueParl lines, then OpenSubtitles blocks that join the previous line in one language with the current line in the other (alternating direction); a second pass with the order reversed fills any remaining budget. English: OpenSubtitles blocks only, in two passes (the second inverts which language leads) if the budget is not filled.
 6. `clean_parallel_corpus.py --es_in ... --eu_in ... --es_out ... --eu_out ...`: drops empty and duplicate pairs and pairs whose word-length ratio exceeds 3, applied to the concatenated CCMatrix, ParaCrawl v9 and Elhuyar files. The three corpora are concatenated (CCMatrix, ParaCrawl v9, Elhuyar, Spanish side and Basque side in the same order) before this step. The 4M-pair subsample is drawn after tokenisation, see the EnerGIZAr section.
 
-Phase 3 reads the Latxa corpus directly. The only random seed in the pipeline above is the interleaving in step 3 (42); steps 4 and 5 are deterministic. **TODO:** confirm the same holds for the English scripts.
+Phase 3 reads the Latxa corpus directly. The only random seed in the pipeline above is the interleaving in step 3 (42); steps 4 and 5 are deterministic.
 
 ## Training
 
@@ -132,13 +128,12 @@ Each configuration has one job script in `scripts/`. They call the Python script
 | Baseline                         | `scripts/train_baseline.sh`                   | `src/Training/continual_training_es.py` |
 | CSCL-es                          | `scripts/train_cscl_spanish.sh`               | `src/Training/train_cscl_spanish.py`  |
 | CSCL-en                          | `scripts/train_cscl_english.sh`               | `src/Training/train_cscl_english.py`  |
-| TokAlign, TokAlign-CSCL          | **TODO:** job script                          | `src/Training/train_tokalign.py`      |
-| EnerGIZAr, EnerGIZAr-CSCL        | `scripts/train_energizar_v2.sh`               | `src/Training/build_energizar_embeddings.py`, `train_energizar.py` |
+| TokAlign, TokAlign-CSCL          |  `scripts/train_tokalign.sh`                  | `src/Training/train_cscl_spanish.py`      |
+| EnerGIZAr, EnerGIZAr-CSCL        | `scripts/train_energizar.sh`               | `src/Training/build_energizar_embeddings.py`, `train_energizar.py` |
 | Basque tokenizer                 | `scripts/train_tokenizer.sh`                  | `src/Training/train_tokenizer.py`     |
 
 The CSCL scripts train one phase at a time (`--phase 1a|1b|1c|2|3`), each resuming from the previous phase's `final_milestone` folder.
-
-**TODO:** the scripts currently refer to `code/...`; update them to `src/Training/...` and check that the training scripts in `src/Training/` are the versions that produced the reported results (per-phase restart with 5% warmup).
+Disclaimer: some paths in the scripts might need to be changed.
 
 ### TokAlign
 

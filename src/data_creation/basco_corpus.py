@@ -1,9 +1,15 @@
+"""Extract the code-switched sentences from the BaSCo corpus.
+
+Input:  <DATA_ROOT>/valid_utterances.json   (from https://github.com/Vicomtech/BaSCo-Corpus)
+Output: <DATA_ROOT>/BaSCo_corpus.txt        (one code-switched sentence per line)
+"""
 import json
 import os
 
-# Define your paths
-input_json_file = "/user/i.elcoroalberdi/u25035/MASTER/thesis/data/valid_utterances.json"
-output_txt_file = "/user/i.elcoroalberdi/u25035/MASTER/thesis/data/BaSCo_corpus.txt"
+from data_paths import DATA_ROOT
+
+input_json_file = os.path.join(DATA_ROOT, "valid_utterances.json")
+output_txt_file = os.path.join(DATA_ROOT, "BaSCo_corpus.txt")
 
 print(f"[INFO] Parsing JSON file: {input_json_file}")
 
@@ -11,7 +17,7 @@ extracted_sentences = []
 
 with open(input_json_file, "r", encoding="utf-8") as f:
     data = json.load(f)
-    
+
     for entry in data:
         # Check if the entry has a code-switching block
         if "code-switching" in entry:
@@ -28,4 +34,4 @@ with open(output_txt_file, "w", encoding="utf-8") as out:
         out.write(sentence + "\n")
 
 print(f"[SUCCESS] Extracted {len(extracted_sentences)} code-switched sentences!")
-print(f"[INFO] Saved to clean text layout at: {output_txt_file}")
+print(f"[INFO] Saved to: {output_txt_file}")

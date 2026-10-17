@@ -1,17 +1,33 @@
+"""Build the TokAlign stabilization corpus: 150,000 CulturaX samples, 80% Basque
+(120,000) and 20% Spanish (30,000), shuffled with seed 0.
+
+Output: <DATA_ROOT>/pretrain-corpus/pile00.json (one {"text": ...} per line).
+Copy or symlink it to TokAlign/data/pretrain-corpus/pile00.json before running TokAlign.
+
+CulturaX is gated: log in first with `huggingface-cli login` (or set HF_TOKEN).
+"""
 import json
+import os
 import random
+
 from datasets import load_dataset
+
+from data_paths import DATA_ROOT
+
+HF_TOKEN = os.getenv("HF_TOKEN") or None  # None: use the cached login
 
 print("[INFO] Initializing streaming data pipelines...")
 
 # Stream both datasets to avoid blowing up cluster memory
-basque_stream = load_dataset("uonlp/CulturaX", "eu", split="train", streaming=True)
-spanish_stream = load_dataset("uonlp/CulturaX", "es", split="train", streaming=True)
+basque_stream = load_dataset("uonlp/CulturaX", "eu", split="train", streaming=True, token=HF_TOKEN)
+spanish_stream = load_dataset("uonlp/CulturaX", "es", split="train", streaming=True, token=HF_TOKEN)
 
-output_file = "/user/i.elcoroalberdi/u25035/MASTER/thesis/TokAlign/data/pretrain-corpus/pile00.json"
+output_dir = os.path.join(DATA_ROOT, "pretrain-corpus")
+os.makedirs(output_dir, exist_ok=True)
+output_file = os.path.join(output_dir, "pile00.json")
 
 # --- 80/20 Basque/Spanish proportion ---
-TOTAL_SAMPLES = 150000          # total rows in the final corpus (same scale as before)
+TOTAL_SAMPLES = 150000
 BASQUE_RATIO = 0.8
 basque_target = int(TOTAL_SAMPLES * BASQUE_RATIO)        # 120,000
 spanish_target = TOTAL_SAMPLES - basque_target            # 30,000
@@ -51,8 +67,7 @@ for sample in spanish_iter:
 
 print(f"[INFO] Collected {eu_count} Basque rows and {es_count} Spanish rows.")
 
-# Shuffle so language isn't strictly alternating/blocked -- gives a natural mixed corpus
-# while still respecting the 80/20 overall proportion.
+# Shuffle so that language is not blocked: natural mixed corpus, 80/20 overall.
 random.shuffle(rows)
 
 with open(output_file, "w", encoding="utf-8") as f:
@@ -60,5 +75,4 @@ with open(output_file, "w", encoding="utf-8") as f:
         f.write(json.dumps({"text": text}) + "\n")
 
 print(f"[SUCCESS] Extraction complete! Wrote {len(rows)} lines "
-      f"({eu_count} Basque / {es_count} Spanish, ~{BASQUE_RATIO:.0%}/{1-BASQUE_RATIO:.0%}) "
-      f"to {output_file}")
+      f"({eu_count} Basque / {es_count} Spanish) to {output_file}")

@@ -28,11 +28,8 @@ test-run/
 *.tar.gz
 *.tar.zst
 *.zip
-*.npy
 
 # per-item evaluation outputs (keep the *_summary.json files)
-src/Evaluation/results/*.jsonl
-results/*.jsonl
 
 # GIZA++ working files
 src/giza/*.tok

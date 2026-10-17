@@ -213,7 +213,6 @@ The evaluation scripts have a `MODELS` dictionary at the top; point its paths to
 | EusProficiency                        | `eval_eus_prof.sh`              | `src/Evaluation/evaluate_eus_prof.py`           | 5-shot, single run                            |
 | Sentence-level cosine / Jaccard alignment | `run_alignment.sh`, `alignment_random.sh` | `alignment_multiseed.py`, `jacard_multiseed.py`, `random_cosine.py`, `random_jaccard.py` | FLORES-200 pairs, mean-pooled last layer, seeds 42/123/2024 |
 | Word-level alignment                  | `word_alignment.sh`             | `src/Evaluation/word_alignment.py`              | 200 sampled Apertium pairs                    |
-| t-SNE of parallel sentences           | `tsne.sh`                       | `src/Evaluation/tsne_crosslingual_alignment.py` | middle layer                                  |
 
 The evaluation job scripts may contain paths of the author's cluster; adapt them to your setup.
 

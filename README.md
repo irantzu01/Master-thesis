@@ -85,8 +85,9 @@ git clone https://github.com/ZNLP/TokAlign && git -C TokAlign checkout 3ef5bc92
 git clone https://github.com/catherinearnett/multiblimp && git -C multiblimp checkout dcd23bcd
 git clone https://github.com/apertium/apertium-eu-es && git clone https://github.com/apertium/apertium-eu-en   # use the releases matching the versions above
 git -C multiblimp apply ../patches/multiblimp.patch      # adds --local_model_path
-git -C TokAlign apply ../patches/tokalign.patch          # TODO: create this patch
 ```
+
+TokAlign is used unmodified apart from the paths and the training options given in the TokAlign section below.
 
 Build mgiza following its own instructions (CMake; Boost 1.83.0 was used here).
 
@@ -211,10 +212,16 @@ The evaluation scripts have a `MODELS` dictionary at the top; point its paths to
 | BasqueGLUE (BEC, BHTC, coref, QNLI, Vaxx, WiC) | `eval_basqueglue.sh` | `src/Evaluation/eval_basqueglue_multiseed.py`   | 5-shot, seeds 42/123/2024 (0-shot: one seed)  |
 | EusReading                            | `eval_eus_read.sh`              | `src/Evaluation/evaluate_eus_read.py`           | 5-shot, single run                            |
 | EusProficiency                        | `eval_eus_prof.sh`              | `src/Evaluation/evaluate_eus_prof.py`           | 5-shot, single run                            |
-| Sentence-level cosine / Jaccard alignment | `run_alignment.sh`, `alignment_random.sh` | `alignment_multiseed.py`, `jacard_multiseed.py`, `random_cosine.py`, `random_jaccard.py` | FLORES-200 pairs, mean-pooled last layer, seeds 42/123/2024 |
+| Sentence-level cosine / Jaccard alignment | `run_alignment.sh`, `alignment_random.sh` | `alignment_multiseed.py`, `jacard_multiseed.py`, `random_cosine.py`, `random_jaccard.py`, `jacard_plot.py` | FLORES-200 pairs, mean-pooled last layer, seeds 42/123/2024 |
 | Word-level alignment                  | `word_alignment.sh`             | `src/Evaluation/word_alignment.py`              | 200 sampled Apertium pairs                    |
 
-The evaluation job scripts may contain paths of the author's cluster; adapt them to your setup.
+The evaluation job scripts in `scripts/` are given as they were run on the author's cluster. They still contain cluster-specific paths (module names, partition, absolute checkpoint locations) and, in some cases, a placeholder for a Hugging Face token. To rerun an evaluation, do the following:
+
+1. Download and unpack the checkpoints from the release (see above).
+2. Edit the `MODELS` dictionary at the top of the corresponding Python script (or the `--model_path` arguments in `calculate_perplexity.sh` and `eval_multiblimp.sh`) so that it points to the unpacked folders.
+3. Adapt the `#SBATCH` and `module load` lines, or run the Python command from the script directly from the repository root, e.g. `python src/Evaluation/ppl_bootstrap.py --model_path ./cscl-es --dataset flores_eu`.
+
+The Python scripts in `src/Evaluation/` contain the full evaluation logic; the job scripts only call them for each model in turn.
 
 ### Random-pair baseline
 
@@ -227,6 +234,7 @@ Raw cosine and Jaccard alignment are inflated by anisotropy, especially for GPT-
 - Two results are unexplained: the TokAlign-CSCL drop on BasqueGLUE Vaxx and the Baseline outlier on EusReading.
 - Training from scratch needs the data sources above and a GPU with bf16 support. Exact numbers may differ slightly because GPU training is not bit-wise deterministic.
 - The 4M-pair subsample for the GIZA alignment is reproducible with the command given above, but the shuffle can differ between GNU coreutils versions.
+- The evaluation job scripts were not rewritten for portability (see [Evaluation](#evaluation)); they document how each evaluation was run but need path adjustments to run elsewhere.
 
 ## Citation
 

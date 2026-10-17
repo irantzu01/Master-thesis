@@ -227,7 +227,6 @@ Raw cosine and Jaccard alignment are inflated by anisotropy, especially for GPT-
 - Two results are unexplained: the TokAlign-CSCL drop on BasqueGLUE Vaxx and the Baseline outlier on EusReading.
 - Training from scratch needs the data sources above and a GPU with bf16 support. Exact numbers may differ slightly because GPU training is not bit-wise deterministic.
 - The 4M-pair subsample for the GIZA alignment is reproducible with the command given above, but the shuffle can differ between GNU coreutils versions.
-- Some scripts in `src/Evaluation/` (`evaluate_alignment.py`, `evaluate_jacard.py`, `eval_muse.py`) are earlier versions and were not used for the reported results.
 
 ## Citation
 

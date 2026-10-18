@@ -37,7 +37,7 @@ src/
   data_creation/   download, cleaning and construction of all training data
   Training/        training scripts (baseline, CSCL, EnerGIZAr)
   giza/            GIZA++ pipeline for EnerGIZAr
-  Evaluation/      perplexity, BasqueGLUE, Latxa benchmarks, alignment analyses
+  Evaluation/      perplexity, BasqueGLUE, EusReading/EusProficiency, MultiBLiMP, alignment analyses
   Experiments/     exploratory scripts (not used for reported results)
 patches/      local changes to third-party code (apply as described below)
 plots/        figure scripts and figures used in the thesis
@@ -165,7 +165,7 @@ PHASES="2 3" sbatch scripts/train_cscl_spanish.sh
 
 ### TokAlign
 
-The Basque target tokenizer (BPE, 50,257 tokens) is trained on 200,000 Latxa sentences (`src/Training/train_tokenizer.py`, seed 42). The Spanish–Basque alignment matrix is built with TokAlign (GloVe on 50,000 Spanish CulturaX and 50,000 Basque Latxa sentences, cosine similarity, argmax copy, identity for shared tokens). Stabilization uses a separate 150,000-sample corpus (120,000 Latxa and 30,000 Spanish CulturaX sentences, seed 0; built by `src/data_creation/download_data.py`): 2,500 steps with only the embeddings trainable (learning rate 6.4e-4), then 2,500 steps of full training (5e-5), warmup ratio 0.03, effective batch 128, context length 1,024, DeepSpeed ZeRO-3, bf16. The alignment, initialisation and stabilization steps use the scripts of the TokAlign repository (`script/convert2glove_corpus.sh`, `train_glove.sh`, `token_align.sh`, `init_model.sh`, ...), with the local modifications in `patches/tokalign.patch`. The stabilised model is written to `TokAlign/log/gpt2/0_spanish_S2`; this model is the **TokAlign** configuration and the starting point of TokAlign-CSCL.
+The Basque target tokenizer (BPE, 50,257 tokens) is trained on 200,000 Latxa texts (`scripts/train_tokenizer.sh` → `src/Training/train_tokenizer.py`, seed 42; the Latxa corpus is gated, log in to Hugging Face first). The script writes `basque_tokenizer_50257/` (included in the repository) and `basque_latxa_alignment.json`, the Basque text for the TokAlign step. The Spanish–Basque alignment matrix is built with TokAlign (GloVe on 50,000 Spanish CulturaX and 50,000 Basque Latxa sentences, cosine similarity, argmax copy, identity for shared tokens). Stabilization uses a separate 150,000-sample corpus (120,000 Latxa and 30,000 Spanish CulturaX sentences, seed 0; built by `src/data_creation/download_data.py`): 2,500 steps with only the embeddings trainable (learning rate 6.4e-4), then 2,500 steps of full training (5e-5), warmup ratio 0.03, effective batch 128, context length 1,024, DeepSpeed ZeRO-3, bf16. The alignment, initialisation and stabilization steps use the scripts of the TokAlign repository (`script/convert2glove_corpus.sh`, `train_glove.sh`, `token_align.sh`, `init_model.sh`, ...). The stabilised model is written to `TokAlign/log/gpt2/0_spanish_S2`; this model is the **TokAlign** configuration and the starting point of TokAlign-CSCL.
 
 ### EnerGIZAr
 
@@ -209,7 +209,7 @@ The evaluation scripts expect the unpacked folders in `checkpoints/` in the repo
 |---------------------------------------|---------------------------------|-------------------------------------------------|-----------------------------------------------|
 | Perplexity, Basque FLORES-200         | `calculate_perplexity.sh`       | `src/Evaluation/ppl_bootstrap.py`               | 3 bootstrap seeds                             |
 | MultiBLiMP                            | `eval_multiblimp.sh`            | `multiblimp/scripts/lm_eval/eval_model.py`      | deterministic, single run                     |
-| BasqueGLUE (BEC, BHTC, coref, QNLI, Vaxx, WiC) | `eval_basqueglue.sh` | `src/Evaluation/eval_basqueglue_multiseed.py`   | 5-shot, seeds 42/123/2024 (0-shot: one seed)  |
+| BasqueGLUE (BEC, BHTC, coref, QNLI, Vaxx, WiC) | `eval_basqueglue.sh` | `src/Evaluation/eval_basqueglue_multiseed.py`   | 5-shot, seeds 42/123/2024                     |
 | EusReading                            | `eval_eus_read.sh`              | `src/Evaluation/evaluate_eus_read.py`           | 5-shot, single run                            |
 | EusProficiency                        | `eval_eus_prof.sh`              | `src/Evaluation/evaluate_eus_prof.py`           | 5-shot, single run                            |
 | Sentence-level cosine / Jaccard alignment | `alignment_random.sh` | `src/Evaluation/random_cosine.py`, `random_jaccard.py` | FLORES-200 pairs, mean-pooled last layer, seeds 42/123/2024 |
@@ -228,7 +228,7 @@ Run all job scripts from the repository root (`sbatch scripts/<name>.sh`, with `
 
 FLORES-200 is not redistributed here (perplexity uses the `devtest` split, the alignment scripts the `dev` split). Download it from <https://dl.fbaipublicfiles.com/nllb/flores200_dataset.tar.gz> and unpack it into `data/` (or set `FLORES_DIR`). The alignment scripts use the first 200 sentences of the `dev` split and print their results to the job log.
 
-**MultiBLiMP** runs inside the `multiblimp` clone (patched, see above) and expects the Basque data in `multiblimp/hf_cache/eus/`; the trained models are passed with `--local_model_path "$CKPT_DIR/<name>"`. Results are written to `multiblimp/bgpt_multiblimp_results/`.
+**MultiBLiMP** runs inside the `multiblimp` clone (patched, see above). Download the Basque data first with the script of that repository (`cd multiblimp && python download_data.py --langs eus`), which creates `multiblimp/hf_cache/eus/`; the trained models are passed with `--local_model_path "$CKPT_DIR/<name>"`. Results are written to `multiblimp/bgpt_multiblimp_results/`.
 
 **Word-level alignment** reads the Apertium dictionaries from the clones `apertium-eu-es/` and `apertium-eu-en/` in the repository root (set `APERTIUM_EU_ES_DIX` / `APERTIUM_EU_EN_DIX` to use other files).
 

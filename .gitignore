@@ -41,3 +41,4 @@ src/giza/logs/
 .DS_Store
 *.tok
 checkpoints/
+src/Evaluation/results/

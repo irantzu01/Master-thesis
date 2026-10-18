@@ -1,7 +1,9 @@
 # Bridging the Representation Gap: Combining Vocabulary Adaptation and Code-Switching for Low Resource Languages
 
 Code for the MSc thesis of **Irantzu Elcoro Alberdi** (MSc Applied Data Science, Georg-August-Universität Göttingen, Human-Centered Data Science, September 2026).
-First examiner and supervisor: Prof. Lisa Beinborn · Second examiner: Prof. Caroline Sporleder · Co-supervisor: Zhuojing Huang.
+First examiner and supervisor: Prof. Lisa Beinborn  
+Second examiner: Prof. Caroline Sporleder  
+Co-supervisor: Zhuojing Huang
 
 The thesis adapts GPT-2-small-scale models to Basque. This repository contains the code for data construction, training and evaluation; all seven model checkpoints are attached to a release (see [Pretrained checkpoints](#pretrained-checkpoints)).
 
@@ -41,7 +43,7 @@ src/
   Experiments/     exploratory scripts (not used for reported results)
 patches/      local changes to third-party code (apply as described below)
 plots/        figure scripts and figures used in the thesis
-results/      small result files
+results/      raw_alignment_scores/: per-pair alignment scores used by the alignment plots
 ```
 
 ## Setup
@@ -226,6 +228,8 @@ Run all job scripts from the repository root (`sbatch scripts/<name>.sh`, with `
 | `FLORES_DEVTEST_DIR` | `<repo>/data/flores200_dataset/devtest` | FLORES-200 `devtest` folder, used for perplexity |
 | `RESULTS_DIR` | `src/Evaluation/results`                  | per-item results (`.jsonl`) and summaries                            |
 
+Result files of the runs are not stored in the repository: the numbers in the thesis were taken from the job logs, and rerunning a script recreates the per-item files in `RESULTS_DIR` (git-ignored).
+
 FLORES-200 is not redistributed here (perplexity uses the `devtest` split, the alignment scripts the `dev` split). Download it from <https://dl.fbaipublicfiles.com/nllb/flores200_dataset.tar.gz> and unpack it into `data/` (or set `FLORES_DIR`). The alignment scripts use the first 200 sentences of the `dev` split and print their results to the job log.
 
 **MultiBLiMP** runs inside the `multiblimp` clone (patched, see above). Download the Basque data first with the script of that repository (`cd multiblimp && python download_data.py --langs eus`), which creates `multiblimp/hf_cache/eus/`; the trained models are passed with `--local_model_path "$CKPT_DIR/<name>"`. Results are written to `multiblimp/bgpt_multiblimp_results/`.
@@ -247,14 +251,3 @@ Raw cosine and Jaccard alignment are inflated by anisotropy, especially for GPT-
 - Two results are unexplained: the TokAlign-CSCL drop on BasqueGLUE Vaxx and the Baseline outlier on EusReading.
 - Training from scratch needs the data sources above and a GPU with bf16 support. Exact numbers may differ slightly because GPU training is not bit-wise deterministic.
 - The 4M-pair subsample for the GIZA alignment is reproducible with the command given above, but the shuffle can differ between GNU coreutils versions.
-
-## Citation
-
-```bibtex
-@mastersthesis{elcoro2026basque,
-  author = {Elcoro Alberdi, Irantzu},
-  title  = {Bridging the Representation Gap: Combining Vocabulary Adaptation and Code-Switching for Low Resource Languages},
-  school = {University of G{\"o}ttingen},
-  year   = {2026}
-}
-```

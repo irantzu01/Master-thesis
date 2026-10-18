@@ -33,7 +33,6 @@ executing==2.2.1
 faiss-cpu==1.13.2
 fasttext==0.9.3
 filelock==3.29.0
-flash-attn @ https://github.com/Dao-AILab/flash-attention/releases/download/v2.5.0/flash_attn-2.5.0+cu122torch2.1cxx11abiFalse-cp311-cp311-linux_x86_64.whl#sha256=13ee950e8b93e0241c0dbf35b491a29e88d5329675ef722433707bdf29f0eb1e
 fonttools==4.62.1
 frozenlist==1.8.0
 fsspec==2023.10.0

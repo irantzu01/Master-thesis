@@ -251,3 +251,4 @@ Raw cosine and Jaccard alignment are inflated by anisotropy, especially for GPT-
 - Two results are unexplained: the TokAlign-CSCL drop on BasqueGLUE Vaxx and the Baseline outlier on EusReading.
 - Training from scratch needs the data sources above and a GPU with bf16 support. Exact numbers may differ slightly because GPU training is not bit-wise deterministic.
 - The 4M-pair subsample for the GIZA alignment is reproducible with the command given above, but the shuffle can differ between GNU coreutils versions.
+- `scripts/train_baseline.sh` and `scripts/train_energizar.sh`, and the Python files `src/Training/continual_training_es.py`, `train_energizar.py` and `build_energizar_embeddings.py`, still contain absolute paths of the author's cluster (data folders, GIZA output, checkpoints) and a placeholder for the Hugging Face token; adapt the paths and use your own login before running them.

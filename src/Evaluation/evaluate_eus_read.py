@@ -9,55 +9,24 @@ import torch
 from tqdm import tqdm
 from collections import defaultdict
 
-
-scripts_path = os.path.expanduser("~/MASTER/thesis/code")
-sys.path.append(scripts_path)
-
-
 from evaluation_helper_functions import build_batch_tensors, score_choices
+from eval_paths import ckpt, RESULTS_DIR, is_local
 
 # ==================== CONFIGURATION ====================
+# Checkpoints are the unpacked release folders (see eval_paths.py); GPT-2 models come from the Hugging Face hub.
+def _local(name):
+    return {"path": ckpt(name), "tokenizer_base": ckpt(name)}
+
 MODELS = {
-    "Baseline": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/baseline_full_basque/checkpoint-400000",
-        "tokenizer_base": "DeepESP/gpt2-spanish"
-    },
-    "CSCL-es": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/original_3_models/cscl_results/phase_3/final_milestone",
-        "tokenizer_base": "DeepESP/gpt2-spanish"
-    },
-    "CSCL-en": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/original_3_models/cscl_results_english/phase_3/final_milestone",
-        "tokenizer_base": "openai-community/gpt2"
-    },
-    "GPT-2 Spanish": {
-        "path": "DeepESP/gpt2-spanish",
-        "tokenizer_base": "DeepESP/gpt2-spanish"
-    },
-    "GPT-2 English": {
-        "path": "openai-community/gpt2",
-        "tokenizer_base": "openai-community/gpt2"
-    },
-    "TokAlign-Trained": {
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/gpt2-cscl-tokalign/phase_3/final_milestone",
-        "tokenizer_base": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/gpt2-cscl-tokalign/phase_3/final_milestone"
-    },
-    "TokAlign-Untrained": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/TokAlign/log/gpt2/0_spanish_S2",
-        "tokenizer_base": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/TokAlign/log/gpt2/0_spanish_S2"
-    },
-    "Tokalign-CSCL":{
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/tokalign-cscl-v4/phase_3/final_milestone",
-        "tokenizer_base": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/tokalign-cscl-v4/phase_3/final_milestone"
-    },
-    "EnerGIZAr++-Untrained": {
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/energizar_initialized_model_v2",
-        "tokenizer_base": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/energizar_initialized_model_v2"
-    },
-    "Energizar-CSCL":{
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/energizar-v2/phase_3/final_milestone",
-        "tokenizer_base": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/energizar-v2/phase_3/final_milestone"
-    }
+    "Baseline":              {"path": ckpt("baseline"), "tokenizer_base": "DeepESP/gpt2-spanish"},
+    "CSCL-es":               {"path": ckpt("cscl-es"),  "tokenizer_base": "DeepESP/gpt2-spanish"},
+    "CSCL-en":               {"path": ckpt("cscl-en"),  "tokenizer_base": "openai-community/gpt2"},
+    "GPT-2 Spanish":         {"path": "DeepESP/gpt2-spanish",     "tokenizer_base": "DeepESP/gpt2-spanish"},
+    "GPT-2 English":         {"path": "openai-community/gpt2",    "tokenizer_base": "openai-community/gpt2"},
+    "TokAlign-Untrained":    _local("tokalign"),
+    "Tokalign-CSCL":         _local("tokalign-cscl"),
+    "EnerGIZAr++-Untrained": _local("energizar"),
+    "Energizar-CSCL":        _local("energizar-cscl"),
 }
 
 seed = 42
@@ -262,8 +231,8 @@ def main():
     print(f"Device: {device}")
     
     print("\nLoading model and tokenizer...")
-    model = AutoModelForCausalLM.from_pretrained(model_config["path"], local_files_only=True)
-    tokenizer = AutoTokenizer.from_pretrained(model_config["tokenizer_base"], local_files_only=True)
+    model = AutoModelForCausalLM.from_pretrained(model_config["path"], local_files_only=is_local(model_config["path"]))
+    tokenizer = AutoTokenizer.from_pretrained(model_config["tokenizer_base"], local_files_only=is_local(model_config["tokenizer_base"]))
     model.to(device)
     model.eval()
     print("✓ Model loaded")
@@ -273,8 +242,8 @@ def main():
     )
     
     # Save results
-    os.makedirs("results", exist_ok=True)
-    results_file = f"results/eusreading_{args.model}_{args.shots}shot.jsonl"
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
+    results_file = RESULTS_DIR / f"eusreading_{args.model}_{args.shots}shot.jsonl"
     
     with open(results_file, "w") as f:
         for result in results:

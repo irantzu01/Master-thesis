@@ -1,6 +1,6 @@
 #!/bin/bash
 #SBATCH --job-name=eval_eus_prof
-#SBATCH --output=logs/eval_eus_prof%j.log
+#SBATCH --output=logs/eval_eus_prof_%j.log
 #SBATCH -n 1
 #SBATCH --cpus-per-task=8
 #SBATCH --gres=gpu:A100:1
@@ -8,33 +8,32 @@
 #SBATCH --time=24:00:00
 #SBATCH --partition=react
 
-echo "Starting job $SLURM_JOB_ID on node $(hostname)"
+# EusProficiency, 5-shot, seed 42. Model paths: src/Evaluation/evaluate_eus_prof.py (MODELS, via eval_paths.py).
+# Usage (from the repository root, with logs/ existing):  sbatch scripts/eval_eus_prof.sh
+# The #SBATCH and module lines are specific to the author's cluster; adapt them to your system.
+# Datasets and GPT-2 reference models are downloaded from the Hugging Face hub (--constraint=inet = internet access).
 
-# === 1. LOAD MODULES (MAY VARY BY CLUSTER) ===
+set -euo pipefail
+echo "Starting job ${SLURM_JOB_ID:-local} on node $(hostname)"
+
 module purge
 module load gcc/13.2.0
 module load python/3.11.9
 
-# === 2. ACTIVATE YOUR VIRTUAL ENVIRONMENT ===
-BASE_DIR="/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis"
+# Repository root = directory sbatch was called from (or the parent of scripts/).
+BASE_DIR="${SLURM_SUBMIT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 cd "$BASE_DIR"
 source "$BASE_DIR/.venv/bin/activate"
 echo "Environment loaded."
 
-# === 3. MOVE TO PROJECT DIRECTORY ===
-cd "$BASE_DIR/code/Evaluation"
+# Unpacked release checkpoints (baseline, cscl-es, cscl-en, tokalign, tokalign-cscl, energizar, energizar-cscl).
+# Default: <repo>/checkpoints; override with  CKPT_DIR=/path sbatch scripts/<name>.sh
+export CKPT_DIR="${CKPT_DIR:-$BASE_DIR/checkpoints}"
+# Results (.jsonl and summaries) go to src/Evaluation/results unless RESULTS_DIR is set.
+export TORCH_LOAD_WEIGHTS_ONLY=FALSE
 
-echo "Running python experiment..."
 
-# === 4. RUN YOUR PYTHON SCRIPT ===
-python evaluate_eus_prof.py --model "Baseline" --shots 5
-python evaluate_eus_prof.py --model "CSCL-es" --shots 5
-python evaluate_eus_prof.py --model "CSCL-en" --shots 5
-python evaluate_eus_prof.py --model "GPT-2 Spanish" --shots 5
-python evaluate_eus_prof.py --model "GPT-2 English" --shots 5
-python evaluate_eus_prof.py --model "TokAlign-Untrained" --shots 5
-python evaluate_eus_prof.py --model "Tokalign-CSCL" --shots 5
-python evaluate_eus_prof.py --model "EnerGIZAr++-Untrained" --shots 5
-python evaluate_eus_prof.py --model "Energizar-CSCL" --shots 5
-
+for MODEL in "Baseline" "CSCL-es" "CSCL-en" "GPT-2 Spanish" "GPT-2 English" "TokAlign-Untrained" "Tokalign-CSCL" "EnerGIZAr++-Untrained" "Energizar-CSCL"; do
+  python src/Evaluation/evaluate_eus_prof.py --model "$MODEL" --shots 5
+done
 echo "Job finished."

@@ -8,32 +8,34 @@
 #SBATCH --time=4:00:00
 #SBATCH --partition=react
 
-echo "Starting job $SLURM_JOB_ID on node $(hostname)"
+# BasqueGLUE (BEC, BHTC, coref, QNLI, Vaxx, WiC), 5-shot, seeds 42/123/2024. Model paths: src/Evaluation/eval_basqueglue_multiseed.py (MODELS, via eval_paths.py).
+# Usage (from the repository root, with logs/ existing):  sbatch scripts/eval_basqueglue.sh
+# The #SBATCH and module lines are specific to the author's cluster; adapt them to your system.
+# Datasets and GPT-2 reference models are downloaded from the Hugging Face hub (--constraint=inet = internet access).
 
-# === 1. LOAD MODULES (MAY VARY BY CLUSTER) ===
+set -euo pipefail
+echo "Starting job ${SLURM_JOB_ID:-local} on node $(hostname)"
+
 module purge
 module load gcc/13.2.0
 module load python/3.11.9
 
-# === 2. ACTIVATE YOUR VIRTUAL ENVIRONMENT ===
-BASE_DIR="/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis"
+# Repository root = directory sbatch was called from (or the parent of scripts/).
+BASE_DIR="${SLURM_SUBMIT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 cd "$BASE_DIR"
 source "$BASE_DIR/.venv/bin/activate"
 echo "Environment loaded."
 
-# === 3. MOVE TO PROJECT DIRECTORY ===
-cd "$BASE_DIR/code/Evaluation"
+# Unpacked release checkpoints (baseline, cscl-es, cscl-en, tokalign, tokalign-cscl, energizar, energizar-cscl).
+# Default: <repo>/checkpoints; override with  CKPT_DIR=/path sbatch scripts/<name>.sh
+export CKPT_DIR="${CKPT_DIR:-$BASE_DIR/checkpoints}"
+# Results (.jsonl and summaries) go to src/Evaluation/results unless RESULTS_DIR is set.
+export TORCH_LOAD_WEIGHTS_ONLY=FALSE
 
-echo "Running python experiment..."
 
-# === 4. RUN YOUR PYTHON SCRIPT ===
-echo "Evaluating BasqueGLUE with 0-shot examples..."
-python eval_basqueglue_multiseed.py --model baseline
-python eval_basqueglue_multiseed.py --model cscl_es
-python eval_basqueglue_multiseed.py --model cscl_en
-python eval_basqueglue_multiseed.py --model tokalign-untrained
-python eval_basqueglue_multiseed.py --model tokalign-cscl
-python eval_basqueglue_multiseed.py --model energizar-untrained
-python eval_basqueglue_multiseed.py --model energizar-cscl
-
+SHOTS="${SHOTS:-5}"
+echo "Evaluating BasqueGLUE with $SHOTS-shot examples..."
+for MODEL in baseline cscl_es cscl_en tokalign-untrained tokalign-cscl energizar-untrained energizar-cscl; do
+  python src/Evaluation/eval_basqueglue_multiseed.py --model "$MODEL" --shots "$SHOTS"
+done
 echo "Job finished."

@@ -7,9 +7,9 @@ MultiBLiMP, a different seed here produces a different prompt, not just a
 different resample of an already-computed result. Each seed therefore
 requires a full re-run of the model over the dataset.
 
-Usage:
-    python eval_basqueglue_multiseed.py --model baseline
-    python eval_basqueglue_multiseed.py --model cscl_es --task bec --n_seeds 3
+Usage (from the repository root; checkpoints are read from $CKPT_DIR, see eval_paths.py):
+    python src/Evaluation/eval_basqueglue_multiseed.py --model baseline --shots 5
+    python src/Evaluation/eval_basqueglue_multiseed.py --model cscl_es --task bec --seeds 42 123 2024
 """
 
 import os
@@ -24,49 +24,28 @@ from datasets import load_dataset
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from sklearn.metrics import f1_score
 from tqdm import tqdm
+from eval_paths import ckpt, RESULTS_DIR
 from collections import Counter
 
 # ==================== CONFIGURATION ====================
 MODELS = {
-    "baseline": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/original_3_models/baseline_full_basque/checkpoint-400000",
-        "description": "Baseline (continual pretraining, Spanish->Basque)",
-    },
-    "cscl_es": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/original_3_models/cscl_results/phase_3/final_milestone",
-        "description": "CSCL-es (Spanish-base CSCL pipeline)",
-    },
-    "cscl_en": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/original_3_models/cscl_results_english/phase_3/final_milestone",
-        "description": "CSCL-en (English-base CSCL pipeline)",
-    },
-    "tokalign-untrained": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/TokAlign/log/gpt2/0_spanish_S2",
-        "description": "TokAlign-untrained (untrained TokAlign model)",
-    },
-    # "tokalign-trained-cont": {
-    #     "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/gpt2-cscl-tokalign/phase_3/final_milestone",
-    #     "description": "TokAlign-trained (TokAlign model trained on CSCL-es)",
-    # },
-    # "tokalign-restart": {
-    #     "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/tokalign-cscl-restart/phase_3/final_milestone",
-    #     "description": "TokAlign-restart (TokAlign model trained on CSCL-es with restart)",
-    # },
-    "tokalign-cscl":{
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/tokalign-cscl-v4/phase_3/final_milestone",
-        "description": "TokAlign-CSCL (TokAlign model trained on CSCL-es)",
-    },
-    "energizar-untrained":{
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/energizar_initialized_model_v2",
-        "description": "Energizar-untrained (untrained Energizar model)",
-    },
-    "energizar-cscl":{
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/energizar-v2/phase_3/final_milestone",
-        "description": "Energizar-CSCL (Energizar model trained on CSCL-es)",
-    }
+    "baseline":            {"path": ckpt("baseline"),
+                            "description": "Baseline (continual pretraining, Spanish->Basque)"},
+    "cscl_es":             {"path": ckpt("cscl-es"),
+                            "description": "CSCL-es (Spanish-base CSCL pipeline)"},
+    "cscl_en":             {"path": ckpt("cscl-en"),
+                            "description": "CSCL-en (English-base CSCL pipeline)"},
+    "tokalign-untrained":  {"path": ckpt("tokalign"),
+                            "description": "TokAlign (initialised and stabilised, no CSCL)"},
+    "tokalign-cscl":       {"path": ckpt("tokalign-cscl"),
+                            "description": "TokAlign-CSCL"},
+    "energizar-untrained": {"path": ckpt("energizar"),
+                            "description": "EnerGIZAr (initialised, no further training)"},
+    "energizar-cscl":      {"path": ckpt("energizar-cscl"),
+                            "description": "EnerGIZAr-CSCL"},
 }
 
-SHOTS = 0
+DEFAULT_SHOTS = 5
 MAX_PROMPT_TOKENS = 900
 DEFAULT_SEEDS = [42, 123, 2024]
 
@@ -193,7 +172,7 @@ def truncate_prompt_ids(tokenizer, prompt_ids, max_len):
     return prompt_ids
 
 # ==================== EVALUATION (single seed) ====================
-def evaluate_model_one_seed(model, tokenizer, dataset, task, device, seed):
+def evaluate_model_one_seed(model, tokenizer, dataset, task, device, seed, shots):
     """Runs one full evaluation pass over `dataset` for `task`, using `seed`
     to control few-shot exemplar sampling. Returns (score, results, diagnostics)."""
     random.seed(seed)
@@ -207,7 +186,7 @@ def evaluate_model_one_seed(model, tokenizer, dataset, task, device, seed):
 
     for idx, item in enumerate(tqdm(dataset_list, desc=f"  {task} (seed={seed})")):
         fewshot_context = build_fewshot_context(
-            dataset_list, idx, format_question_func, possible_answers, k=SHOTS
+            dataset_list, idx, format_question_func, possible_answers, k=shots
         )
         query_text = format_question_func(item)
         prompt_text = fewshot_context + "\n\n" + query_text
@@ -252,6 +231,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--model", type=str, required=True, choices=list(MODELS.keys()))
     parser.add_argument("--task", type=str, default=None, choices=list(CONFIGS.keys()))
+    parser.add_argument("--shots", type=int, default=DEFAULT_SHOTS,
+                         help="Number of few-shot examples (default: 5)")
     parser.add_argument("--seeds", type=int, nargs="+", default=DEFAULT_SEEDS,
                          help="Seeds to evaluate with (default: 42 123 2024)")
     args = parser.parse_args()
@@ -276,7 +257,7 @@ def main():
     tasks_to_eval = [args.task] if args.task else list(CONFIGS.keys())
     seeds = args.seeds
 
-    os.makedirs("results", exist_ok=True)
+    RESULTS_DIR.mkdir(parents=True, exist_ok=True)
 
     all_task_summaries = {}
 
@@ -290,10 +271,10 @@ def main():
 
         per_seed_scores = []
         for seed in seeds:
-            score, results = evaluate_model_one_seed(model, tokenizer, dataset, task_name, device, seed)
+            score, results = evaluate_model_one_seed(model, tokenizer, dataset, task_name, device, seed, args.shots)
             per_seed_scores.append(score)
 
-            results_file = f"results/basqueglue_{task_name}_{args.model}_{SHOTS}shot_seed{seed}.jsonl"
+            results_file = RESULTS_DIR / f"basqueglue_{task_name}_{args.model}_{args.shots}shot_seed{seed}.jsonl"
             with open(results_file, "w") as f:
                 for result in results:
                     f.write(json.dumps(result) + "\n")
@@ -319,11 +300,11 @@ def main():
     for task_name, summary in all_task_summaries.items():
         print(f"{task_name:>10}: mean={summary['mean']:.4f}  std={summary['std']:.4f}  ({summary['metric']})")
 
-    summary_file = f"results/basqueglue_{args.model}_{SHOTS}shot_multiseed_summary.json"
+    summary_file = RESULTS_DIR / f"basqueglue_{args.model}_{args.shots}shot_multiseed_summary.json"
     summary_out = {
         "model": args.model,
         "description": model_config['description'],
-        "shots": SHOTS,
+        "shots": args.shots,
         "seeds": seeds,
         "results": all_task_summaries,
     }

@@ -5,6 +5,7 @@ import random
 import xml.etree.ElementTree as ET
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from sklearn.metrics.pairwise import cosine_similarity
+from eval_paths import ckpt, is_local, APERTIUM_EU_ES_DIX, APERTIUM_EU_EN_DIX
 
 # --- 1. Runtime Configurations ---
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -15,50 +16,19 @@ BOOTSTRAP_SEEDS = [42, 123, 2024]
 N_WORD_PAIRS = 200  # matches the scale of the sentence-level FLORES analysis
 SAMPLE_SEED = 42
 
-APERTIUM_EU_ES_DIX = "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/apertium-eu-es/apertium-eu-es.eu-es.dix"
-APERTIUM_EU_EN_DIX = "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/apertium-eu-en/apertium-eu-en.eu-en.dix"
+APERTIUM_EU_ES_DIX = str(APERTIUM_EU_ES_DIX)
+APERTIUM_EU_EN_DIX = str(APERTIUM_EU_EN_DIX)
 
 MODELS_TO_TEST = {
-    "Baseline": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/baseline_full_basque/checkpoint-400000",
-        "tokenizer_base": "DeepESP/gpt2-spanish"
-    },
-    "CSCL-es": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/original_3_models/cscl_results/phase_3/final_milestone",
-        "tokenizer_base": "DeepESP/gpt2-spanish"
-    },
-    "CSCL-en": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/original_3_models/cscl_results_english/phase_3/final_milestone",
-        "tokenizer_base": "openai-community/gpt2"
-    },
-    "GPT-2 Spanish": {
-        "path": "DeepESP/gpt2-spanish",
-        "tokenizer_base": "DeepESP/gpt2-spanish"
-    },
-    "GPT-2 English": {
-        "path": "openai-community/gpt2",
-        "tokenizer_base": "openai-community/gpt2"
-    },
-    "TokAlign-Trained": {
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/gpt2-cscl-tokalign/phase_3/final_milestone",
-        "tokenizer_base": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/gpt2-cscl-tokalign/phase_3/final_milestone"
-    },
-    "TokAlign-Untrained": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/TokAlign/log/gpt2/0_spanish_S2",
-        "tokenizer_base": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/TokAlign/log/gpt2/0_spanish_S2"
-    },
-    "Tokalign-CSCL":{
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/tokalign-cscl-v4/phase_3/final_milestone",
-        "tokenizer_base": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/tokalign-cscl-v4/phase_3/final_milestone"
-    },
-    "EnerGIZAr++-Untrained": {
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/energizar_initialized_model_v2",
-        "tokenizer_base": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/energizar_initialized_model_v2"
-    },
-    "Energizar-CSCL":{
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/energizar-v2/phase_3/final_milestone",
-        "tokenizer_base": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/energizar-v2/phase_3/final_milestone"
-    }
+    "Baseline":              {"path": ckpt("baseline"), "tokenizer_base": "DeepESP/gpt2-spanish"},
+    "CSCL-es":               {"path": ckpt("cscl-es"),  "tokenizer_base": "DeepESP/gpt2-spanish"},
+    "CSCL-en":               {"path": ckpt("cscl-en"),  "tokenizer_base": "openai-community/gpt2"},
+    "GPT-2 Spanish":         {"path": "DeepESP/gpt2-spanish",   "tokenizer_base": "DeepESP/gpt2-spanish"},
+    "GPT-2 English":         {"path": "openai-community/gpt2",  "tokenizer_base": "openai-community/gpt2"},
+    "TokAlign-Untrained":    {"path": ckpt("tokalign"),         "tokenizer_base": ckpt("tokalign")},
+    "Tokalign-CSCL":         {"path": ckpt("tokalign-cscl"),    "tokenizer_base": ckpt("tokalign-cscl")},
+    "EnerGIZAr++-Untrained": {"path": ckpt("energizar"),        "tokenizer_base": ckpt("energizar")},
+    "Energizar-CSCL":        {"path": ckpt("energizar-cscl"),   "tokenizer_base": ckpt("energizar-cscl")},
 }
 
 
@@ -223,13 +193,13 @@ for name, config in MODELS_TO_TEST.items():
         print(f"[SKIP] Checkpoint directory not found: {config['path']}")
         continue
 
-    tokenizer = AutoTokenizer.from_pretrained(config["tokenizer_base"], local_files_only=True)
-    model = AutoModelForCausalLM.from_pretrained(config["path"], local_files_only=True).to(device)
+    tokenizer = AutoTokenizer.from_pretrained(config["tokenizer_base"], local_files_only=is_local(config["tokenizer_base"]))
+    model = AutoModelForCausalLM.from_pretrained(config["path"], local_files_only=is_local(config["path"])).to(device)
 
     if name in ["CSCL-en", "GPT-2 English"]:
-        source_words, target_words, comparison_label = en_words, eu_words_en_pair, "English <-> Basque (word-level)"
+        source_words, target_words, comparison_label = en_words, eu_words_en_pair, "English <-> Basque(word-level)"
     else:
-        source_words, target_words, comparison_label = es_words, eu_words_es_pair, "Spanish <-> Basque (word-level)"
+        source_words, target_words, comparison_label = es_words, eu_words_es_pair, "Spanish <-> Basque(word-level)"
 
     source_vectors = get_word_embeddings(model, tokenizer, source_words)
     target_vectors = get_word_embeddings(model, tokenizer, target_words)

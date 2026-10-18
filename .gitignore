@@ -40,3 +40,4 @@ src/giza/logs/
 *.BACKUP
 .DS_Store
 *.tok
+checkpoints/

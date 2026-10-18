@@ -8,106 +8,57 @@
 #SBATCH --time=24:00:00
 #SBATCH --partition=react
 
-echo "Starting job $SLURM_JOB_ID on node $(hostname)"
+# MultiBLiMP (Basque) for all models. Needs the patched multiblimp clone in the repository root (patches/multiblimp.patch adds --local_model_path) and the Basque data in multiblimp/hf_cache/eus/.
+# Usage (from the repository root, with logs/ existing):  sbatch scripts/eval_multiblimp.sh
+# The #SBATCH and module lines are specific to the author's cluster; adapt them to your system.
 
-# === 1. LOAD MODULES (MAY VARY BY CLUSTER) ===
+set -euo pipefail
+echo "Starting job ${SLURM_JOB_ID:-local} on node $(hostname)"
+
 module purge
 module load gcc/13.2.0
 module load python/3.11.9
 
-# === 2. ACTIVATE YOUR VIRTUAL ENVIRONMENT ===
-BASE_DIR="/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis"
+# Repository root = directory sbatch was called from (or the parent of scripts/).
+BASE_DIR="${SLURM_SUBMIT_DIR:-$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)}"
 cd "$BASE_DIR"
 source "$BASE_DIR/.venv/bin/activate"
 echo "Environment loaded."
 
-# === 3. MOVE TO PROJECT DIRECTORY ===
+# Unpacked release checkpoints; default <repo>/checkpoints, override with CKPT_DIR=/path sbatch ...
+export CKPT_DIR="${CKPT_DIR:-$BASE_DIR/checkpoints}"
+export TORCH_LOAD_WEIGHTS_ONLY=FALSE
+
 cd "$BASE_DIR/multiblimp"
-
-echo "Running python experiment..."
-
-#=== 4. RUN YOUR PYTHON SCRIPT ===
+RESULTS=bgpt_multiblimp_results   # relative to multiblimp/
 
 echo "GPT-2 Spanish"
 python scripts/lm_eval/eval_model.py \
         --model_name DeepESP/gpt2-spanish \
-        --data_dir hf_cache/eus/ \
-        --src_dir multiblimp \
-        --results_dir bgpt_multiblimp_results/GPT-2_SPA \
-        --cache_dir hf_cache/
+        --data_dir hf_cache/eus/ --src_dir multiblimp \
+        --results_dir "$RESULTS/GPT-2_SPA" --cache_dir hf_cache/
 
 echo "GPT-2 English"
 python scripts/lm_eval/eval_model.py \
         --model_name openai-community/gpt2 \
-        --data_dir hf_cache/eus/ \
-        --src_dir multiblimp \
-        --results_dir bgpt_multiblimp_results/ \
-        --cache_dir hf_cache/
+        --data_dir hf_cache/eus/ --src_dir multiblimp \
+        --results_dir "$RESULTS/" --cache_dir hf_cache/
+
+eval_local() {  # eval_local <label> <hub model name (architecture/tokenizer)> <checkpoint folder>
+  echo "$1"
+  python scripts/lm_eval/eval_model.py \
+        --model_name "$2" --local_model_path "$3" \
+        --data_dir hf_cache/eus/ --src_dir multiblimp \
+        --results_dir "$RESULTS/trained" --cache_dir hf_cache/
+}
 
 echo "Evaluating trained models..."
-echo "Baseline"
-python scripts/lm_eval/eval_model.py \
-        --model_name DeepESP/gpt2-spanish \
-        --local_model_path "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/original_3_models/baseline_full_basque/checkpoint-400000" \
-        --data_dir hf_cache/eus/ \
-        --src_dir multiblimp \
-        --results_dir bgpt_multiblimp_results/trained \
-        --cache_dir hf_cache/
+eval_local "Baseline"           DeepESP/gpt2-spanish   "$CKPT_DIR/baseline"
+eval_local "CSCL-es"            DeepESP/gpt2-spanish   "$CKPT_DIR/cscl-es"
+eval_local "CSCL-en"            openai-community/gpt2  "$CKPT_DIR/cscl-en"
+eval_local "Tokalign-Untrained" DeepESP/gpt2-spanish   "$CKPT_DIR/tokalign"
+eval_local "Tokalign-CSCL"      DeepESP/gpt2-spanish   "$CKPT_DIR/tokalign-cscl"
+eval_local "Energizar-Untrained" DeepESP/gpt2-spanish  "$CKPT_DIR/energizar"
+eval_local "Energizar-CSCL"     DeepESP/gpt2-spanish   "$CKPT_DIR/energizar-cscl"
 
-echo "CSCL-es"
-python scripts/lm_eval/eval_model.py \
-        --model_name DeepESP/gpt2-spanish \
-        --local_model_path "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/original_3_models/cscl_results/phase_3/final_milestone" \
-        --data_dir hf_cache/eus/ \
-        --src_dir multiblimp \
-        --results_dir bgpt_multiblimp_results/trained \
-        --cache_dir hf_cache/
-
-echo "CSCL-en"
-python scripts/lm_eval/eval_model.py \
-        --model_name openai-community/gpt2 \
-        --local_model_path "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/original_3_models/cscl_results_english/phase_3/final_milestone" \
-        --data_dir hf_cache/eus/ \
-        --src_dir multiblimp \
-        --results_dir bgpt_multiblimp_results/trained \
-        --cache_dir hf_cache/
-
-echo "Tokalign-Untrained"
-python scripts/lm_eval/eval_model.py \
-        --model_name DeepESP/gpt2-spanish \
-        --local_model_path "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/TokAlign/log/gpt2/0_spanish_S2"\
-        --data_dir hf_cache/eus/ \
-        --src_dir multiblimp \
-        --results_dir bgpt_multiblimp_results/trained \
-        --cache_dir hf_cache/
-
-echo "Tokalign-CSCL"
-python scripts/lm_eval/eval_model.py \
-        --model_name DeepESP/gpt2-spanish \
-        --local_model_path "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/tokalign-cscl-v4/phase_3/final_milestone" \
-        --data_dir hf_cache/eus/ \
-        --src_dir multiblimp \
-        --results_dir bgpt_multiblimp_results/trained \
-        --cache_dir hf_cache/
-
-echo "Energizar-Untrained"
-python scripts/lm_eval/eval_model.py \
-        --model_name DeepESP/gpt2-spanish \
-        --local_model_path "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/energizar_initialized_model_v2" \
-        --data_dir hf_cache/eus/ \
-        --src_dir multiblimp \
-        --results_dir bgpt_multiblimp_results/trained \
-        --cache_dir hf_cache/
-
-echo "Energizar-CSCL"
-python scripts/lm_eval/eval_model.py \
-        --model_name DeepESP/gpt2-spanish \
-        --local_model_path "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/energizar-v2/phase_3/final_milestone" \
-        --data_dir hf_cache/eus/ \
-        --src_dir multiblimp \
-        --results_dir bgpt_multiblimp_results/trained \
-        --cache_dir hf_cache/
-
-echo "Job $SLURM_JOB_ID completed."
-
-
+echo "Job finished."

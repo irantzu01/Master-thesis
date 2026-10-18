@@ -4,6 +4,7 @@ import os
 import json
 from transformers import AutoTokenizer, GPT2Tokenizer, AutoModelForCausalLM
 from datasets import load_dataset
+from eval_paths import ckpt, FLORES_DIR, RAW_SCORES_DIR, is_local
 
 # --- 1. Runtime Configurations ---
 device = "cuda" if torch.cuda.is_available() else "cpu"
@@ -12,52 +13,23 @@ print(f"[INFO] Running hidden state alignment diagnostics on: {device}")
 N_BOOTSTRAP = 3
 BOOTSTRAP_SEEDS = [42, 123, 2024]
 
+RAW_SCORES_DIR.mkdir(parents=True, exist_ok=True)  # per-pair scores are saved here (used for the plots)
+
 MODELS_TO_TEST = {
-    "Baseline": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/dumped/baseline_full_basque/checkpoint-400000",
-        "tokenizer_base": "DeepESP/gpt2-spanish"
-    },
-    "CSCL-es": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/original_3_models/cscl_results/phase_3/final_milestone",
-        "tokenizer_base": "DeepESP/gpt2-spanish"
-    },
-    "CSCL-en": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/original_3_models/cscl_results_english/phase_3/final_milestone",
-        "tokenizer_base": "openai-community/gpt2"
-    },
-    "GPT-2 Spanish": {
-        "path": "DeepESP/gpt2-spanish",
-        "tokenizer_base": "DeepESP/gpt2-spanish"
-    },
-    "GPT-2 English": {
-        "path": "openai-community/gpt2",
-        "tokenizer_base": "openai-community/gpt2"
-    },
-    "TokAlign-Trained": {
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/gpt2-cscl-tokalign/phase_3/final_milestone",
-        "tokenizer_base": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/gpt2-cscl-tokalign/phase_3/final_milestone"
-    },
-    "TokAlign-Untrained": {
-        "path": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/TokAlign/log/gpt2/0_spanish_S2",
-        "tokenizer_base": "/mnt/vast-react/projects/react_ag_beinborn_students/u25035/TokAlign/log/gpt2/0_spanish_S2"
-    },
-    "Tokalign-CSCL":{
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/tokalign-cscl-v4/phase_3/final_milestone",
-        "tokenizer_base": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/tokalign-cscl-v4/phase_3/final_milestone"
-    },
-    "EnerGIZAr++-Untrained": {
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/energizar_initialized_model_v2",
-        "tokenizer_base": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/energizar_initialized_model_v2"
-    },
-    "Energizar-CSCL":{
-        "path": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/energizar-v2/phase_3/final_milestone",
-        "tokenizer_base": "/mnt/vast-react/home/i.elcoroalberdi/u25035/MASTER/thesis/dumped/energizar-v2/phase_3/final_milestone"
-    }
+    "Baseline":              {"path": ckpt("baseline"), "tokenizer_base": "DeepESP/gpt2-spanish"},
+    "CSCL-es":               {"path": ckpt("cscl-es"),  "tokenizer_base": "DeepESP/gpt2-spanish"},
+    "CSCL-en":               {"path": ckpt("cscl-en"),  "tokenizer_base": "openai-community/gpt2"},
+    "GPT-2 Spanish":         {"path": "DeepESP/gpt2-spanish",   "tokenizer_base": "DeepESP/gpt2-spanish"},
+    "GPT-2 English":         {"path": "openai-community/gpt2",  "tokenizer_base": "openai-community/gpt2"},
+    "TokAlign-Untrained":    {"path": ckpt("tokalign"),         "tokenizer_base": ckpt("tokalign")},
+    "Tokalign-CSCL":         {"path": ckpt("tokalign-cscl"),    "tokenizer_base": ckpt("tokalign-cscl")},
+    "EnerGIZAr++-Untrained": {"path": ckpt("energizar"),        "tokenizer_base": ckpt("energizar")},
+    "Energizar-CSCL":        {"path": ckpt("energizar-cscl"),   "tokenizer_base": ckpt("energizar-cscl")},
 }
 
 # --- 2. Load Parallel Target Corpus Data ---
-print("[INFO] Fetching parallel test vectors from local FLORES-200 files...")
-dataset_path = "/user/i.elcoroalberdi/u25035/MASTER/thesis/data/flores200_dataset/dev/"
+print("[INFO] Fetching parallel test vectors from local FLORES-200 files (FLORES_DIR, see eval_paths.py)...")
+dataset_path = str(FLORES_DIR)
 
 flores_eu = load_dataset("text", data_files=os.path.join(dataset_path, "eus_Latn.dev"))["train"].select(range(200))
 flores_es = load_dataset("text", data_files=os.path.join(dataset_path, "spa_Latn.dev"))["train"].select(range(200))
@@ -191,7 +163,7 @@ for name, config in MODELS_TO_TEST.items():
         class PurePythonTokenizer:
             def __init__(self, vocab_dict, base_path):
                 self.vocab = vocab_dict
-                self.fallback_tok = GPT2Tokenizer.from_pretrained(base_path, local_files_only=True)
+                self.fallback_tok = GPT2Tokenizer.from_pretrained(base_path, local_files_only=is_local(base_path))
             def __call__(self, text, **kwargs):
                 return self.fallback_tok(text, **kwargs)
             def get_vocab(self):
@@ -200,9 +172,9 @@ for name, config in MODELS_TO_TEST.items():
         tokenizer = PurePythonTokenizer(raw_vocab, config["tokenizer_base"])
     else:
         print(f" -> Loading tokenizer from base cache fallback path...")
-        tokenizer = AutoTokenizer.from_pretrained(config["tokenizer_base"], local_files_only=True)
+        tokenizer = AutoTokenizer.from_pretrained(config["tokenizer_base"], local_files_only=is_local(config["tokenizer_base"]))
 
-    model = AutoModelForCausalLM.from_pretrained(config["path"], local_files_only=True).to(device)
+    model = AutoModelForCausalLM.from_pretrained(config["path"], local_files_only=is_local(config["path"])).to(device)
 
     # Expensive part -- runs the model ONCE over the fixed 200-sentence set.
     eu_vectors = get_sentence_embeddings(model, tokenizer, eu_sentences)
@@ -249,5 +221,8 @@ for name, config in MODELS_TO_TEST.items():
 
     del model
     torch.cuda.empty_cache()
+
+    safe_name = name.replace(" ", "_").replace("+", "plus")
+    np.save(RAW_SCORES_DIR / f"jaccard_{safe_name}.npy", np.array(jaccard_scores))
 
 print("\n[SUCCESS] Matrix processing complete. Jaccard results are ready for thesis inclusion!")

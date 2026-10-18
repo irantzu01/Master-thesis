@@ -6,14 +6,15 @@ import numpy as np
 from transformers import AutoModelForCausalLM, AutoTokenizer
 from datasets import load_dataset
 from tqdm import tqdm
+from eval_paths import FLORES_DEVTEST_DIR
 
 device = "cuda" if torch.cuda.is_available() else "cpu"
 
 
 def get_raw_flores_file(lang_code, is_debug):
-    file_path = f"/user/i.elcoroalberdi/u25035/MASTER/thesis/data/flores200_dataset/devtest/{lang_code}.devtest"
+    file_path = str(FLORES_DEVTEST_DIR / f"{lang_code}.devtest")
     if not os.path.exists(file_path):
-        raise FileNotFoundError(f"Missing raw file: {file_path}. Did you extract the tar.gz?")
+        raise FileNotFoundError(f"Missing raw file: {file_path}. Download FLORES-200 and extract the tar.gz (see README, Evaluation).")
 
     print(f"[INFO] Loading raw text from {file_path}...")
     dataset = load_dataset("text", data_files={"test": file_path}, split="test", streaming=True)

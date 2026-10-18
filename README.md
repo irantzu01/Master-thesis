@@ -201,7 +201,7 @@ model = AutoModelForCausalLM.from_pretrained("./cscl-es")
 tokenizer = AutoTokenizer.from_pretrained("./cscl-es")
 ```
 
-The evaluation scripts have a `MODELS` dictionary at the top; point its paths to the unpacked folders.
+The evaluation scripts expect the unpacked folders in `checkpoints/` in the repository root (`checkpoints/cscl-es`, `checkpoints/tokalign`, ...); set `CKPT_DIR=/other/path` to use another location (see [Evaluation](#evaluation)).
 
 ## Evaluation
 
@@ -212,20 +212,33 @@ The evaluation scripts have a `MODELS` dictionary at the top; point its paths to
 | BasqueGLUE (BEC, BHTC, coref, QNLI, Vaxx, WiC) | `eval_basqueglue.sh` | `src/Evaluation/eval_basqueglue_multiseed.py`   | 5-shot, seeds 42/123/2024 (0-shot: one seed)  |
 | EusReading                            | `eval_eus_read.sh`              | `src/Evaluation/evaluate_eus_read.py`           | 5-shot, single run                            |
 | EusProficiency                        | `eval_eus_prof.sh`              | `src/Evaluation/evaluate_eus_prof.py`           | 5-shot, single run                            |
-| Sentence-level cosine / Jaccard alignment | `run_alignment.sh`, `alignment_random.sh` | `alignment_multiseed.py`, `jacard_multiseed.py`, `random_cosine.py`, `random_jaccard.py`, `jacard_plot.py` | FLORES-200 pairs, mean-pooled last layer, seeds 42/123/2024 |
+| Sentence-level cosine / Jaccard alignment | `alignment_random.sh` | `src/Evaluation/random_cosine.py`, `random_jaccard.py` | FLORES-200 pairs, mean-pooled last layer, seeds 42/123/2024 |
 | Word-level alignment                  | `word_alignment.sh`             | `src/Evaluation/word_alignment.py`              | 200 sampled Apertium pairs                    |
 
-The evaluation job scripts in `scripts/` are given as they were run on the author's cluster. They still contain cluster-specific paths (module names, partition, absolute checkpoint locations) and, in some cases, a placeholder for a Hugging Face token. To rerun an evaluation, do the following:
+Run all job scripts from the repository root (`sbatch scripts/<name>.sh`, with `logs/` existing). The `#SBATCH` and `module load` lines are specific to the author's cluster; adapt them, or run the `python ...` lines of the script directly in your environment.
 
-1. Download and unpack the checkpoints from the release (see above).
-2. Edit the `MODELS` dictionary at the top of the corresponding Python script (or the `--model_path` arguments in `calculate_perplexity.sh` and `eval_multiblimp.sh`) so that it points to the unpacked folders.
-3. Adapt the `#SBATCH` and `module load` lines, or run the Python command from the script directly from the repository root, e.g. `python src/Evaluation/ppl_bootstrap.py --model_path ./cscl-es --dataset flores_eu`.
+**Checkpoints and data.** `eval_basqueglue.sh`, `eval_eus_read.sh`, `eval_eus_prof.sh`, `calculate_perplexity.sh`, `alignment_random.sh`, `word_alignment.sh` and `eval_multiblimp.sh` read the models from `$CKPT_DIR` (default `<repo>/checkpoints`; layout: the seven unpacked release folders `baseline`, `cscl-es`, `cscl-en`, `tokalign`, `tokalign-cscl`, `energizar`, `energizar-cscl`). The two GPT-2 reference models are downloaded from the Hugging Face hub. These paths are defined in `src/Evaluation/eval_paths.py`, together with these settings:
 
-The Python scripts in `src/Evaluation/` contain the full evaluation logic; the job scripts only call them for each model in turn.
+| Variable      | Default                                   | Meaning                                                              |
+|---------------|-------------------------------------------|----------------------------------------------------------------------|
+| `CKPT_DIR`    | `<repo>/checkpoints`                      | unpacked release checkpoints                                         |
+| `FLORES_DIR`  | `<repo>/data/flores200_dataset/dev`       | FLORES-200 `dev` folder (`eus_Latn.dev`, `spa_Latn.dev`, `eng_Latn.dev`) |
+| `FLORES_DEVTEST_DIR` | `<repo>/data/flores200_dataset/devtest` | FLORES-200 `devtest` folder, used for perplexity |
+| `RESULTS_DIR` | `src/Evaluation/results`                  | per-item results (`.jsonl`) and summaries                            |
+
+FLORES-200 is not redistributed here (perplexity uses the `devtest` split, the alignment scripts the `dev` split). Download it from <https://dl.fbaipublicfiles.com/nllb/flores200_dataset.tar.gz> and unpack it into `data/` (or set `FLORES_DIR`). The alignment scripts use the first 200 sentences of the `dev` split and print their results to the job log.
+
+**MultiBLiMP** runs inside the `multiblimp` clone (patched, see above) and expects the Basque data in `multiblimp/hf_cache/eus/`; the trained models are passed with `--local_model_path "$CKPT_DIR/<name>"`. Results are written to `multiblimp/bgpt_multiblimp_results/`.
+
+**Word-level alignment** reads the Apertium dictionaries from the clones `apertium-eu-es/` and `apertium-eu-en/` in the repository root (set `APERTIUM_EU_ES_DIX` / `APERTIUM_EU_EN_DIX` to use other files).
+
+The Python scripts in `src/Evaluation/` contain the full evaluation logic; the job scripts only call them for each model in turn. `evaluation_helper_functions.py` is imported by the EusReading and EusProficiency scripts.
 
 ### Random-pair baseline
 
 Raw cosine and Jaccard alignment are inflated by anisotropy, especially for GPT-2 English, where matched and random pairs score almost the same. The alignment scripts therefore also compute a random-pair baseline (each source item paired with a non-matching target) and the reported gap is *matched − random*, averaged over the three seeds.
+
+`alignment_random.sh` (`random_cosine.py`, `random_jaccard.py`) prints these statistics and also saves the per-pair matched scores (200 values per model) to `results/raw_alignment_scores/` as `cosine_<model>.npy` and `jaccard_<model>.npy`. The alignment figures in `plots/` are based on these files.
 
 ## Known limitations
 
@@ -234,7 +247,6 @@ Raw cosine and Jaccard alignment are inflated by anisotropy, especially for GPT-
 - Two results are unexplained: the TokAlign-CSCL drop on BasqueGLUE Vaxx and the Baseline outlier on EusReading.
 - Training from scratch needs the data sources above and a GPU with bf16 support. Exact numbers may differ slightly because GPU training is not bit-wise deterministic.
 - The 4M-pair subsample for the GIZA alignment is reproducible with the command given above, but the shuffle can differ between GNU coreutils versions.
-- The evaluation job scripts were not rewritten for portability (see [Evaluation](#evaluation)); they document how each evaluation was run but need path adjustments to run elsewhere.
 
 ## Citation
 
